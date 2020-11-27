@@ -1,0 +1,62 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<AsmScannerConfiguration>
+  <ScanManager
+    heartbeatFrequency="PT4H"
+    scannerHealthMetricsEnabled="true"
+    scannerHealthMetricsTarget="Events">
+    <Resources>
+      <!-- TBD. A placeholder for providing job constraints, working directory, and session parameters -->
+    </Resources>
+  </ScanManager>
+    <Scanners>
+       
+      <ScannerInfo name="UserGroupScanner"
+                     path="UserGroupScanner.exe"
+                     persistent="true"
+                     frequency="PT0S"
+                     firstRunDelay="PT0S"
+                     priority="normal"
+                     maxRuns="0">
+            <Arguments></Arguments>
+        </ScannerInfo>
+		
+        <ScannerInfo name="AsmBaselineScanner"
+                     path="AsmBaselineScanner.exe"
+                     persistent="false"
+                     frequency="P1D"
+                     maxRuns="0">
+            <Arguments></Arguments>
+        </ScannerInfo>
+              
+		<!--Enable the Software Inventory Scanner-->
+		<ScannerInfo name="SWInventoryScanner"
+                     path="SWInventoryScanner.exe"
+					 scannerconfig = "InventoryScannerConfig.xml"
+                     persistent="false"
+                     maxRuns="0">
+            <Arguments></Arguments>
+        </ScannerInfo>
+		
+        <ScannerInfo name="EventFilterScanner"
+                     path="EventFilterScanner.exe"
+                     persistent="true"
+                     frequency="PT0S"
+                     firstRunDelay="PT0S"
+                     priority="normal"
+                     maxRuns="0">
+            <Arguments></Arguments>
+        </ScannerInfo>
+		<ScannerInfo name="EventDrivenScanner"
+                     path="EventDrivenScanner.exe"
+                     persistent="true"
+                     frequency="PT0S"
+                     firstRunDelay="PT0S"
+                     priority="normal"
+					 featureName="AsmEventDriven"
+					 isPilot="true"
+                     maxRuns="0">
+            <Arguments>-config:EventDrivenScannerConfig.xml</Arguments>
+        </ScannerInfo>
+
+    </Scanners>
+</AsmScannerConfiguration>

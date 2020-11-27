@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<MonitoringManagement
+    version="1.0"
+    namespace="MyNameSpace"
+    eventVersion="1"
+    timestamp="2013-05-12T00:00:00.000Z">
+  <Management eventVolume="Medium" >
+       <Identity type="TenantRole" />
+    <AgentResourceUsage diskQuotaInMB="10000" />
+  </Management>
+  <Events>
+    <IfxEvents sessionName="ifxsession">
+      <Event
+          id="Ifx.PartASchema/Ifx.BaseOperationSchema/Ifx.OperationSchema"
+          eventName="OperationEvent" />
+    </IfxEvents>
+    <Extensions>
+      <Extension extensionName="MetricsExtension">
+        <CommandLine><![CDATA[MetricsExtension.Native.exe]]></CommandLine>
+        <ResourceUsage
+          cpuPercentUsage="10"
+          workingSetThrottling="true"
+          workingSetLimitInMB="1000"
+          memoryLimitInMB="1000"
+          memoryThrottling="true" />
+      </Extension>
+    </Extensions>
+  </Events>
+  <!-- Populate IFx PartA fields with provided values -->
+  <EnvelopeSchema>
+    <Field name="AppVer">"My_AppVer"</Field>
+    <Field name="AppId">"My_AppId"</Field>
+    <Field name="IKey">"My_IKey"</Field>
+    <Extension name="Cloud">
+      <Field name="Name">GetEnvironmentVariable("MONITORING_TENANT")</Field>
+      <Field name="Role">GetEnvironmentVariable("MONITORING_ROLE")</Field>
+      <Field name="RoleVer">"My_Cloud_RoleVer"</Field>
+      <Field name="RoleInstance">GetEnvironmentVariable("MONITORING_ROLE_INSTANCE")</Field>
+      <Field name="Environment">"My_Environment"</Field>
+      <Field name="Location">"My_Region"</Field>
+      <Field name="DeploymentUnit">"My_Cloud_DeploymentUnit"</Field>
+    </Extension>
+  </EnvelopeSchema>
+</MonitoringManagement>

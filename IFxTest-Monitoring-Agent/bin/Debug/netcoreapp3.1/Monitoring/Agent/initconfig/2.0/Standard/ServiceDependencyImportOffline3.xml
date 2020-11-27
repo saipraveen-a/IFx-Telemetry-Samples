@@ -1,0 +1,1063 @@
+<?xml version="1.0" encoding="utf-8"?>
+<MonitoringManagement version="1.0" namespace="GenevaMdm" timestamp="2018-03-06T02:25:38.0823856Z" eventVersion="3">
+  <Events>
+    <TextLogSubscriptions>
+        
+      <Subscription format="W3c"
+                    eventName="MdaSvcDepRaw"
+                    storeType="Local"
+                    path="%ProgramFiles%\Microsoft Dependency Agent\storage"
+                    nameFilter=".*\.csv"
+                    directoryQuotaInMB="50" >
+        <Delimiters>
+          <Delimiter>,</Delimiter>
+        </Delimiters>
+      </Subscription>
+    
+    </TextLogSubscriptions>
+
+    <DerivedEvents>
+
+      <DerivedEvent eventName="MdaSvcDepIdentity"
+                    storeType="CentralBond"
+                    duration="PT5M">
+        <Query>
+          <![CDATA[
+            let ConfigNamespace = GetEnvironmentVariable("MA_CONFIG_NAMESPACE")
+            
+            let Tenant = GetEnvironmentVariable("MA_TENANT_IDENTITY")
+            let Role = GetEnvironmentVariable("MA_ROLE_IDENTITY")
+            let RoleInstance = GetEnvironmentVariable("MA_ROLEINSTANCE_IDENTITY")
+            
+            let AzureVmIdentity = GetEnvironmentVariable("MA_AZURE_VM_NAME")
+            let AzureVmIdentity = AzureVmIdentity ?? "_n/a" 
+            let AzureNodeIdentity = GetEnvironmentVariable("MA_AZURE_NODE_IDENTITY")
+            let AzureNodeIdentity = AzureNodeIdentity ?? "_n/a"
+            let AzureIdentity = GetEnvironmentVariable("MA_AZURE_IDENTITY")
+            let AzureIdentity = AzureIdentity ?? "_n/a"
+            
+            let MonitoringAccount = GetEnvironmentVariable("MA_AGENT_METRICS_ACCOUNT")
+            let MAHeartbeatIdentity = GetEnvironmentVariable("MA_HEARTBEAT_IDENTITY")
+            
+            let IdentityMetric = SetMdmMeasureMetric(
+                GetEnvironmentVariable("MA_AGENT_METRICS_ACCOUNT"),
+                "ServiceDependency2",
+                "SourceIdentity",
+                1,
+                "Tenant",
+                Tenant,
+                "Role",
+                Role,
+                "RoleInstance",
+                RoleInstance,
+                "ConfigNamespace",
+                ConfigNamespace,
+                "AzureVmIdentity",
+                AzureVmIdentity,
+                "AzureNodeIdentity",
+                AzureNodeIdentity,
+                "AzureIdentity",
+                AzureIdentity
+                )
+            ]]>
+        </Query>
+      </DerivedEvent>
+      
+      <DerivedEvent source="MdaSvcDepRaw"
+                    eventName="MdaSvcDepAgentHeartbeat"
+                    storeType="CentralBond"
+                    duration="PT1M">
+        <Query>
+          <![CDATA[
+            let AgentVersion = AgentVersion ?? "_n/a_"
+            where (AgentVersion != "_n/a_")
+            
+            groupby AgentVersion, InboundConnectionsTruncated, OutboundConnectionsTruncated, BoundPortsTruncated, DnsErrorsTruncated, DnsPerformanceTruncated, HttpTruncated
+            
+            let Tenant = GetEnvironmentVariable("MA_TENANT_IDENTITY")
+            let Role = GetEnvironmentVariable("MA_ROLE_IDENTITY")
+            let RoleInstance = GetEnvironmentVariable("MA_ROLEINSTANCE_IDENTITY")
+
+            let HearbeatMetric = SetMdmMeasureMetric(
+                GetEnvironmentVariable("MA_AGENT_METRICS_ACCOUNT"),
+                "ServiceDependency2",
+                "AgentHeartbeat",
+                1,
+                "Tenant",
+                Tenant,
+                "Role",
+                Role,
+                "RoleInstance",
+                RoleInstance,
+                "AgentVersion",
+                AgentVersion
+                )
+          ]]>
+        </Query>
+      </DerivedEvent>
+
+      <DerivedEvent source="MdaSvcDepRaw"
+                    eventName="MdaSvcDepHttp"
+                    storeType="CentralBond"
+                    duration="PT1M">
+        <Query>
+          <![CDATA[
+          var HttpTableQuery = 
+            let FileVersion = ToString(FileVersion ?? "_n/a_")
+            let DestinationPort = ToString(DestinationPort ?? "_n/a_")
+            let HttpMethod = ToString(HttpMethod ?? "_n/a_")
+						
+            where (DestinationPort != "_n/a_") && (HttpMethod != "_n/a_")
+ 
+            let HostIsLocal = HostIsLocal ?? "0"
+						
+            groupby Host, HostIsLocal, DestinationPort, HttpMethod, HttpStatus, Path, RejectReason, Process
+
+						let CountRequest = Sum(ToInt32(_CountRequest != null && _CountRequest != "_n/a_"  ? _CountRequest : "0"))		
+						let MaxLatencyMs = Sum(ToInt32(_MaxLatencyMs != null && _MaxLatencyMs != "_n/a_"  ? _MaxLatencyMs : "0"))		
+						let MinLatencyMs = Sum(ToInt32(_MinLatencyMs != null && _MinLatencyMs != "_n/a_"  ? _MinLatencyMs : "0"))		
+						let SumLatencyMs = Sum(ToInt64(_SumLatencyMs != null && _SumLatencyMs != "_n/a_"  ? _SumLatencyMs : "0"))		
+
+            let Tenant = GetEnvironmentVariable("MA_TENANT_IDENTITY")
+            let Role = GetEnvironmentVariable("MA_ROLE_IDENTITY")
+            let RoleInstance = GetEnvironmentVariable("MA_ROLEINSTANCE_IDENTITY")
+
+            let IsOutbound = "0";
+            
+          from HttpTableQuery
+          
+          let HttpReqCount = False
+          let HttpReqMaxLatencyMs = False
+          let HttpReqMinLatencyMs = False
+          let HttpReqSumLatencyMs = False
+          
+          if (HostIsLocal == "0")
+          {
+            HttpReqCount = SetMdmMeasureMetric(
+              GetEnvironmentVariable("MA_AGENT_METRICS_ACCOUNT"),
+              "ServiceDependency2",
+              "Http/RequestCount",
+              CountRequest,
+              "Tenant",
+              Tenant,
+              "Role",
+              Role,
+              "RoleInstance",
+              RoleInstance,
+              "Host",
+              Host,
+              "HttpVerb",
+              HttpMethod,
+              "HttpStatus",
+              HttpStatus,
+              "Path",
+              Path,
+              "RejectReason",
+              RejectReason,
+              "Port",
+              DestinationPort,
+              "ProcessName",
+              Process,
+              "IsOutbound",
+              IsOutbound
+              );
+
+            HttpReqMaxLatencyMs = SetMdmMeasureMetric(
+              GetEnvironmentVariable("MA_AGENT_METRICS_ACCOUNT"),
+              "ServiceDependency2",
+              "Http/MaxLatencyMs",
+              MaxLatencyMs,
+              "Tenant",
+              Tenant,
+              "Role",
+              Role,
+              "RoleInstance",
+              RoleInstance,
+              "Host",
+              Host,
+              "HttpVerb",
+              HttpMethod,
+              "HttpStatus",
+              HttpStatus,
+              "Path",
+              Path,
+              "RejectReason",
+              RejectReason,
+              "Port",
+              DestinationPort,
+              "ProcessName",
+              Process,
+              "IsOutbound",
+              IsOutbound
+              );
+
+            HttpReqMinLatencyMs = SetMdmMeasureMetric(
+              GetEnvironmentVariable("MA_AGENT_METRICS_ACCOUNT"),
+              "ServiceDependency2",
+              "Http/MinLatencyMs",
+              MinLatencyMs,
+              "Tenant",
+              Tenant,
+              "Role",
+              Role,
+              "RoleInstance",
+              RoleInstance,
+              "Host",
+              Host,
+              "HttpVerb",
+              HttpMethod,
+              "HttpStatus",
+              HttpStatus,
+              "Path",
+              Path,
+              "RejectReason",
+              RejectReason,
+              "Port",
+              DestinationPort,
+              "ProcessName",
+              Process,
+              "IsOutbound",
+              IsOutbound
+              );
+
+            HttpReqSumLatencyMs = SetMdmMeasureMetric(
+              GetEnvironmentVariable("MA_AGENT_METRICS_ACCOUNT"),
+              "ServiceDependency2",
+              "Http/SumLatencyMs",
+              SumLatencyMs,
+              "Tenant",
+              Tenant,
+              "Role",
+              Role,
+              "RoleInstance",
+              RoleInstance,
+              "Host",
+              Host,
+              "HttpVerb",
+              HttpMethod,
+              "HttpStatus",
+              HttpStatus,
+              "Path",
+              Path,
+              "RejectReason",
+              RejectReason,
+              "Port",
+              DestinationPort,
+              "ProcessName",
+              Process,
+              "IsOutbound",
+              IsOutbound
+              );
+          }
+        ]]>
+        </Query>
+      </DerivedEvent>
+
+      <DerivedEvent source="MdaSvcDepRaw"
+                    eventName="MdaSvcDepNet"
+                    storeType="CentralBond"
+                    duration="PT1M">
+        <Query>
+          <![CDATA[
+          var NetConnectionTableQuery = 
+            let FileVersion = ToString(FileVersion ?? "_n/a_")
+            let Protocol = Protocol ?? "_n/a_"
+            let DestinationPort = ToString(DestinationPort ?? "_n/a_")
+            let SourceIp = ToString(SourceIp ?? "_n/a_")
+            let DestinationIp = ToString(DestinationIp ?? "_n/a_")
+            let IsOutbound = ToString(IsOutbound ?? "_n/a_")
+            let RemoteEndpointClassification = ToString(RemoteEndpointClassification ?? "_n/a_")
+            let TlsCipherSuites = ToString(TlsCipherSuites ?? "_n/a_")
+            let TlsVersions = ToString(TlsVersions ?? "_n/a_")    
+
+            where (FileVersion != "_n/a_") && (DestinationPort != "_n/a_") && (Protocol != "_n/a_") && (DestinationIp != "_n/a_")
+
+            groupby SourceIp, DestinationIp, DestinationPort, RemoteEndpointClassification, Process, Protocol, IsOutbound, TlsCipherSuites, TlsVersions
+
+            let ConnectionClosed = Sum(ToInt32(_SumConnectionsClose != null && _SumConnectionsClose != "_n/a_"  ? _SumConnectionsClose : "0"))
+            let ConnectionOpened = Sum(ToInt32(_SumConnectionsOpen != null && _SumConnectionsOpen != "_n/a_" ? _SumConnectionsOpen : "0"))
+            let ConnectionFailed = Sum(ToInt32(_SumConnectionsFail != null && _SumConnectionsFail != "_n/a_" ? _SumConnectionsFail : "0"))
+            let ActiveConnectionCount = Sum(ToInt32(_CountLiveConnections != null && _CountLiveConnections != "_n/a_" ? _CountLiveConnections : "0"))
+            let BytesSent = Sum(ToInt32(_SumBytesSent != null && _SumBytesSent != "_n/a_" ? _SumBytesSent : "0"))
+            let BytesReceived = Sum(ToInt32(_SumBytesReceived != null && _SumBytesReceived != "_n/a_" ? _SumBytesReceived : "0"))
+            let ResponseCount = Sum(ToInt32(_CountResponses != null && _CountResponses != "_n/a_" ? _CountResponses : "0"))
+            let SumResponseTimeMs = Sum(ToInt32(_SumResponseTimeMs != null && _SumResponseTimeMs != "_n/a_" ? _SumResponseTimeMs : "0"))
+            let MinResponseTimeMs = Min(ToInt32(_MinResponseTimeMs != null && _MinResponseTimeMs != "_n/a_" ? _MinResponseTimeMs : "0"))
+            let MaxResponseTimeMs = Max(ToInt32(_MaxResponseTimeMs != null && _MaxResponseTimeMs != "_n/a_" ? _MaxResponseTimeMs : "0"))
+            let TlsHandshakesComplete = Sum(ToInt32(_SumTlsHandshakesComplete != null && _SumTlsHandshakesComplete != "_n/a_" ? _SumTlsHandshakesComplete : "0"))
+            let TlsHandshakesFailed = Sum(ToInt32(_SumTlsHandshakesFailed != null && _SumTlsHandshakesFailed != "_n/a_" ? _SumTlsHandshakesFailed : "0"))
+            let SumTlsHandshakeLatencyMs = Sum(ToInt32(_SumTlsHandshakeLatencyMs != null && _SumTlsHandshakeLatencyMs != "_n/a_" ? _SumTlsHandshakeLatencyMs : "0"))
+
+            let Tenant = GetEnvironmentVariable("MA_TENANT_IDENTITY")
+            let Role = GetEnvironmentVariable("MA_ROLE_IDENTITY")
+            let RoleInstance = GetEnvironmentVariable("MA_ROLEINSTANCE_IDENTITY")
+
+            let IsOutbound = IsOutbound == "_n/a_" ? "0" : IsOutbound
+            let RemoteTag = RemoteEndpointClassification == "_n/a_" ? "_n/a_" : SplitAndIndex(";", 2, RemoteEndpointClassification)
+            let IsBoundPortAggregateData = SourceIp == "_n/a_" ? "1" : "0"
+            
+            let HasTLS10 = Contains(TlsVersions, "TLS1.0") ? "1" : "0"
+            let HasTLS11 = Contains(TlsVersions, "TLS1.1") ? "1" : "0"
+            let HasTLS12 = Contains(TlsVersions, "TLS1.2") ? "1" : "0"
+            let HasTLS13 = Contains(TlsVersions, "TLS1.3") ? "1" : "0";
+          
+          from NetConnectionTableQuery
+          
+          let NetConnectionsClosed = False
+          let NetConnectionsOpened = False
+          let NetConnectionsReset = False
+          let NetBytesSent = False
+          let NetBytesReceived = False
+          let NetResponseCount = False
+          let NetSumResponseTimeMs = False
+          let NetMinResponseTimeMs = False
+          let NetMaxResponseTimeMs = False
+          let NetActiveConnectionCount = False
+          let NetTlsHandshakesComplete = False
+          let NetTlsHandshakesFailed = False
+          let NetSumTlsHandshakeLatencyMs = False
+          
+          if (IsOutbound == "1" || SourceIp == "_n/a_")
+          {
+            NetConnectionsClosed = SetMdmMeasureMetric(
+              GetEnvironmentVariable("MA_AGENT_METRICS_ACCOUNT"),
+              "ServiceDependency2",
+              "Network/ConnectionClosed",
+              ConnectionClosed,
+              "Tenant",
+              Tenant,
+              "Role",
+              Role,
+              "RoleInstance",
+              RoleInstance,
+              "Vip",
+              DestinationIp,
+              "RemoteTag",
+              RemoteTag,
+              "ProcessName",
+              Process,
+              "Protocol",
+              Protocol,
+              "Port",
+              DestinationPort,
+              "IsOutbound",
+              IsOutbound,
+              "HasTLS1.0",
+              HasTLS10,
+              "HasTLS1.1",
+              HasTLS11,
+              "HasTLS1.2",
+              HasTLS12,
+              "HasTLS1.3",
+              HasTLS13
+              );
+
+            NetConnectionsOpened = SetMdmMeasureMetric(
+              GetEnvironmentVariable("MA_AGENT_METRICS_ACCOUNT"),
+              "ServiceDependency2",
+              "Network/ConnectionOpened",
+              ConnectionOpened,
+              "Tenant",
+              Tenant,
+              "Role",
+              Role,
+              "RoleInstance",
+              RoleInstance,
+              "Vip",
+              DestinationIp,
+              "RemoteTag",
+              RemoteTag,
+              "ProcessName",
+              Process,
+              "Protocol",
+              Protocol,
+              "Port",
+              DestinationPort,
+              "IsOutbound",
+              IsOutbound,
+              "HasTLS1.0",
+              HasTLS10,
+              "HasTLS1.1",
+              HasTLS11,
+              "HasTLS1.2",
+              HasTLS12,
+              "HasTLS1.3",
+              HasTLS13
+              );
+
+            NetConnectionsReset = SetMdmMeasureMetric(
+              GetEnvironmentVariable("MA_AGENT_METRICS_ACCOUNT"),
+              "ServiceDependency2",
+              "Network/ConnectionFailed",
+              ConnectionFailed,
+              "Tenant",
+              Tenant,
+              "Role",
+              Role,
+              "RoleInstance",
+              RoleInstance,
+              "Vip",
+              DestinationIp,
+              "RemoteTag",
+              RemoteTag,
+              "ProcessName",
+              Process,
+              "Protocol",
+              Protocol,
+              "Port",
+              DestinationPort,
+              "IsOutbound",
+              IsOutbound,
+              "HasTLS1.0",
+              HasTLS10,
+              "HasTLS1.1",
+              HasTLS11,
+              "HasTLS1.2",
+              HasTLS12,
+              "HasTLS1.3",
+              HasTLS13
+              );
+
+            NetBytesSent = SetMdmMeasureMetric(
+              GetEnvironmentVariable("MA_AGENT_METRICS_ACCOUNT"),
+              "ServiceDependency2",
+              "Network/SentBytes",
+              BytesSent,
+              "Tenant",
+              Tenant,
+              "Role",
+              Role,
+              "RoleInstance",
+              RoleInstance,
+              "Vip",
+              DestinationIp,
+              "RemoteTag",
+              RemoteTag,
+              "ProcessName",
+              Process,
+              "Protocol",
+              Protocol,
+              "Port",
+              DestinationPort,
+              "IsOutbound",
+              IsOutbound,
+              "HasTLS1.0",
+              HasTLS10,
+              "HasTLS1.1",
+              HasTLS11,
+              "HasTLS1.2",
+              HasTLS12,
+              "HasTLS1.3",
+              HasTLS13
+              );
+
+            NetBytesReceived = SetMdmMeasureMetric(
+              GetEnvironmentVariable("MA_AGENT_METRICS_ACCOUNT"),
+              "ServiceDependency2",
+              "Network/ReceivedBytes",
+              BytesReceived,
+              "Tenant",
+              Tenant,
+              "Role",
+              Role,
+              "RoleInstance",
+              RoleInstance,
+              "Vip",
+              DestinationIp,
+              "RemoteTag",
+              RemoteTag,
+              "ProcessName",
+              Process,
+              "Protocol",
+              Protocol,
+              "Port",
+              DestinationPort,
+              "IsOutbound",
+              IsOutbound,
+              "HasTLS1.0",
+              HasTLS10,
+              "HasTLS1.1",
+              HasTLS11,
+              "HasTLS1.2",
+              HasTLS12,
+              "HasTLS1.3",
+              HasTLS13
+              );
+              
+            NetActiveConnectionCount = SetMdmMeasureMetric(
+              GetEnvironmentVariable("MA_AGENT_METRICS_ACCOUNT"),
+              "ServiceDependency2",
+              "Network/ActiveConnectionCount",
+              ActiveConnectionCount,
+              "Tenant",
+              Tenant,
+              "Role",
+              Role,
+              "RoleInstance",
+              RoleInstance,
+              "Vip",
+              DestinationIp,
+              "RemoteTag",
+              RemoteTag,
+              "ProcessName",
+              Process,
+              "Protocol",
+              Protocol,
+              "Port",
+              DestinationPort,
+              "IsOutbound",
+              IsOutbound,
+              "HasTLS1.0",
+              HasTLS10,
+              "HasTLS1.1",
+              HasTLS11,
+              "HasTLS1.2",
+              HasTLS12,
+              "HasTLS1.3",
+              HasTLS13
+              );
+
+            NetResponseCount = SetMdmMeasureMetric(
+              GetEnvironmentVariable("MA_AGENT_METRICS_ACCOUNT"),
+              "ServiceDependency2",
+              "Network/ResponseCount",
+              ResponseCount,
+              "Tenant",
+              Tenant,
+              "Role",
+              Role,
+              "RoleInstance",
+              RoleInstance,
+              "Vip",
+              DestinationIp,
+              "RemoteTag",
+              RemoteTag,
+              "ProcessName",
+              Process,
+              "Protocol",
+              Protocol,
+              "Port",
+              DestinationPort,
+              "IsOutbound",
+              IsOutbound,
+              "HasTLS1.0",
+              HasTLS10,
+              "HasTLS1.1",
+              HasTLS11,
+              "HasTLS1.2",
+              HasTLS12,
+              "HasTLS1.3",
+              HasTLS13
+              );
+            
+            NetSumResponseTimeMs = SetMdmMeasureMetric(
+              GetEnvironmentVariable("MA_AGENT_METRICS_ACCOUNT"),
+              "ServiceDependency2",
+              "Network/SumResponseTimeMs",
+              SumResponseTimeMs,
+              "Tenant",
+              Tenant,
+              "Role",
+              Role,
+              "RoleInstance",
+              RoleInstance,
+              "Vip",
+              DestinationIp,
+              "RemoteTag",
+              RemoteTag,
+              "ProcessName",
+              Process,
+              "Protocol",
+              Protocol,
+              "Port",
+              DestinationPort,
+              "IsOutbound",
+              IsOutbound,
+              "HasTLS1.0",
+              HasTLS10,
+              "HasTLS1.1",
+              HasTLS11,
+              "HasTLS1.2",
+              HasTLS12,
+              "HasTLS1.3",
+              HasTLS13
+              );
+            
+            NetMinResponseTimeMs = SetMdmMeasureMetric(
+              GetEnvironmentVariable("MA_AGENT_METRICS_ACCOUNT"),
+              "ServiceDependency2",
+              "Network/MinResponseTimeMs",
+              MinResponseTimeMs,
+              "Tenant",
+              Tenant,
+              "Role",
+              Role,
+              "RoleInstance",
+              RoleInstance,
+              "Vip",
+              DestinationIp,
+              "RemoteTag",
+              RemoteTag,
+              "ProcessName",
+              Process,
+              "Protocol",
+              Protocol,
+              "Port",
+              DestinationPort,
+              "IsOutbound",
+              IsOutbound,
+              "HasTLS1.0",
+              HasTLS10,
+              "HasTLS1.1",
+              HasTLS11,
+              "HasTLS1.2",
+              HasTLS12,
+              "HasTLS1.3",
+              HasTLS13
+              );
+            
+            NetMaxResponseTimeMs = SetMdmMeasureMetric(
+              GetEnvironmentVariable("MA_AGENT_METRICS_ACCOUNT"),
+              "ServiceDependency2",
+              "Network/MaxResponseTimeMs",
+              MaxResponseTimeMs,
+              "Tenant",
+              Tenant,
+              "Role",
+              Role,
+              "RoleInstance",
+              RoleInstance,
+              "Vip",
+              DestinationIp,
+              "RemoteTag",
+              RemoteTag,
+              "ProcessName",
+              Process,
+              "Protocol",
+              Protocol,
+              "Port",
+              DestinationPort,
+              "IsOutbound",
+              IsOutbound,
+              "HasTLS1.0",
+              HasTLS10,
+              "HasTLS1.1",
+              HasTLS11,
+              "HasTLS1.2",
+              HasTLS12,
+              "HasTLS1.3",
+              HasTLS13
+              );
+            
+            NetTlsHandshakesComplete = SetMdmMeasureMetric(
+              GetEnvironmentVariable("MA_AGENT_METRICS_ACCOUNT"),
+              "ServiceDependency2",
+              "Network/TlsHandshakesComplete",
+              TlsHandshakesComplete,
+              "Tenant",
+              Tenant,
+              "Role",
+              Role,
+              "RoleInstance",
+              RoleInstance,
+              "Vip",
+              DestinationIp,
+              "RemoteTag",
+              RemoteTag,
+              "ProcessName",
+              Process,
+              "Protocol",
+              Protocol,
+              "Port",
+              DestinationPort,
+              "IsOutbound",
+              IsOutbound,
+              "HasTLS1.0",
+              HasTLS10,
+              "HasTLS1.1",
+              HasTLS11,
+              "HasTLS1.2",
+              HasTLS12,
+              "HasTLS1.3",
+              HasTLS13
+              );
+            
+            NetTlsHandshakesFailed = SetMdmMeasureMetric(
+              GetEnvironmentVariable("MA_AGENT_METRICS_ACCOUNT"),
+              "ServiceDependency2",
+              "Network/TlsHandshakesFailed",
+              TlsHandshakesFailed,
+              "Tenant",
+              Tenant,
+              "Role",
+              Role,
+              "RoleInstance",
+              RoleInstance,
+              "Vip",
+              DestinationIp,
+              "RemoteTag",
+              RemoteTag,
+              "ProcessName",
+              Process,
+              "Protocol",
+              Protocol,
+              "Port",
+              DestinationPort,
+              "IsOutbound",
+              IsOutbound,
+              "HasTLS1.0",
+              HasTLS10,
+              "HasTLS1.1",
+              HasTLS11,
+              "HasTLS1.2",
+              HasTLS12,
+              "HasTLS1.3",
+              HasTLS13
+              );
+            
+            NetSumTlsHandshakeLatencyMs = SetMdmMeasureMetric(
+              GetEnvironmentVariable("MA_AGENT_METRICS_ACCOUNT"),
+              "ServiceDependency2",
+              "Network/SumTlsHandshakeLatencyMs",
+              SumTlsHandshakeLatencyMs,
+              "Tenant",
+              Tenant,
+              "Role",
+              Role,
+              "RoleInstance",
+              RoleInstance,
+              "Vip",
+              DestinationIp,
+              "RemoteTag",
+              RemoteTag,
+              "ProcessName",
+              Process,
+              "Protocol",
+              Protocol,
+              "Port",
+              DestinationPort,
+              "IsOutbound",
+              IsOutbound,
+              "HasTLS1.0",
+              HasTLS10,
+              "HasTLS1.1",
+              HasTLS11,
+              "HasTLS1.2",
+              HasTLS12,
+              "HasTLS1.3",
+              HasTLS13
+              );
+           }
+        ]]>
+        </Query>
+      </DerivedEvent>
+
+      <!-- 
+      This table does not have any unique rows as its column set overlaps that of NetworkConnections. However, NetworkConnections has an
+       IsOutbound column that this does not, so combine the filter for NetworkConnections with a requirement that the IsOutbound column
+       be null to ensure we are reading only the BoundPorts table
+      -->
+      <DerivedEvent source="MdaSvcDepRaw"
+                    eventName="MdaSvcDepBoundPort"
+                    storeType="CentralBond"
+                    duration="PT1M">
+        <Query>
+          <![CDATA[
+            let FileVersion = ToString(FileVersion ?? "_n/a_")
+            let Protocol = Protocol ?? "_n/a_"
+            let Port = ToString(DestinationPort ?? "_n/a_")
+            let Ip = ToString(DestinationIp ?? "_n/a_")
+						let ProcessPersistentKey = ToString(ProcessPersistentKey ?? "_n/a_")
+						let Process = ToString(Process ?? "_n/a_")
+            let TlsCipherSuites = ToString(TlsCipherSuites ?? "_n/a_")
+            let TlsVersions = ToString(TlsVersions ?? "_n/a_")
+						
+            where (FileVersion != "_n/a_") && (Port != "_n/a_") && (Protocol != "_n/a_") && (Ip != "_n/a_") && IsOutbound == null
+						
+            let ConnectionClosed = ToInt32(_SumConnectionsClose != null && _SumConnectionsClose != "_n/a_"  ? _SumConnectionsClose : "0")
+            let ConnectionOpened = ToInt32(_SumConnectionsOpen != null && _SumConnectionsOpen != "_n/a_" ? _SumConnectionsOpen : "0")
+            let ActiveConnectionCount = ToInt32(_CountLiveConnections != null && _CountLiveConnections != "_n/a_" ? _CountLiveConnections : "0")
+            let BytesSent = ToInt32(_SumBytesSent != null && _SumBytesSent != "_n/a_" ? _SumBytesSent : "0")
+            let BytesReceived = ToInt32(_SumBytesReceived != null && _SumBytesReceived != "_n/a_" ? _SumBytesReceived : "0")
+            let ResponseCount = ToInt32(_CountResponses != null && _CountResponses != "_n/a_" ? _CountResponses : "0")
+            let MinResponseTimeMs = ToInt32(_MinResponseTimeMs != null && _MinResponseTimeMs != "_n/a_" ? _MinResponseTimeMs : "0")
+            let MaxResponseTimeMs = ToInt32(_MaxResponseTimeMs != null && _MaxResponseTimeMs != "_n/a_" ? _MaxResponseTimeMs : "0")
+            let SumResponseTimeMs = ToInt32(_SumResponseTimeMs != null && _SumResponseTimeMs != "_n/a_" ? _SumResponseTimeMs : "0")
+            let TlsHandshakesComplete = ToInt32(_SumTlsHandshakesComplete != null && _SumTlsHandshakesComplete != "_n/a_" ? _SumTlsHandshakesComplete : "0")
+            let TlsHandshakesFailed = ToInt32(_SumTlsHandshakesFailed != null && _SumTlsHandshakesFailed != "_n/a_" ? _SumTlsHandshakesFailed : "0")
+            let SumTlsHandshakeLatencyMs = ToInt32(_SumTlsHandshakeLatencyMs != null && _SumTlsHandshakeLatencyMs != "_n/a_" ? _SumTlsHandshakeLatencyMs : "0")
+
+            let Tenant = GetEnvironmentVariable("MA_TENANT_IDENTITY")
+            let Role = GetEnvironmentVariable("MA_ROLE_IDENTITY")
+            let RoleInstance = GetEnvironmentVariable("MA_ROLEINSTANCE_IDENTITY")
+            
+            let HasTLS10 = Contains(TlsVersions, "TLS1.0") ? "1" : "0"
+            let HasTLS11 = Contains(TlsVersions, "TLS1.1") ? "1" : "0"
+            let HasTLS12 = Contains(TlsVersions, "TLS1.2") ? "1" : "0"
+            let HasTLS13 = Contains(TlsVersions, "TLS1.3") ? "1" : "0"
+						
+						select Tenant, Role, RoleInstance, 
+						       Ip, Port, 
+									 Protocol, 
+									 Process, ProcessPersistentKey, 
+						       TlsVersions, TlsCipherSuites, HasTLS10, HasTLS11, HasTLS12, HasTLS13, 
+									 ConnectionClosed, ConnectionOpened, ActiveConnectionCount, 
+									 BytesSent, BytesReceived, 
+									 ResponseCount, MinResponseTimeMs, MaxResponseTimeMs, SumResponseTimeMs, 
+									 TlsHandshakesComplete, TlsHandshakesFailed, SumTlsHandshakeLatencyMs
+					]]>
+        </Query>
+      </DerivedEvent>
+
+      <!-- 
+      This table shares columns with the DNS table, but also includes Process, so look for both TransactionPattern and Process to 
+       ensure we see only rows from that table
+      -->
+      <DerivedEvent source="MdaSvcDepRaw"
+                    eventName="MdaSvcDepDnsPerformance"
+                    storeType="CentralBond"
+                    duration="PT1M">
+        <Query>
+          <![CDATA[
+            let FileVersion = ToString(FileVersion ?? "_n/a_")
+            let TransactionPattern = ToString(TransactionPattern ?? "_n/a_")
+            let DnsServerPort = ToString(DestinationPort ?? "_n/a_")
+            let DnsServerIp = ToString(DestinationIp ?? "_n/a_")
+						let ProcessPersistentKey = ToString(ProcessPersistentKey ?? "_n/a_")
+            let Process = ToString(Process ?? "_n/a_")
+            let DnsServerClassification = ToString(RemoteEndpointClassification ?? "_n/a_")
+            let Status = ToString(Status ?? "_n/a_")
+
+            where (FileVersion != "_n/a_") && (DnsServerPort != "_n/a_") && (DnsServerIp != "_n/a_") && (TransactionPattern != "_n/a_") && (Process != "_n/a_")
+
+            let CountRequest = ToInt32(_CountRequest != null && _CountRequest != "_n/a_"  ? _CountRequest : "0")
+            let CountError = ToInt32(_CountError != null && _CountError != "_n/a_" ? _CountError : "0")
+            let MinResponseTimeMs = ToInt32(_MinResponseTimeMs != null && _MinResponseTimeMs != "_n/a_" ? _MinResponseTimeMs : "0")
+            let MaxResponseTimeMs = ToInt32(_MaxResponseTimeMs != null && _MaxResponseTimeMs != "_n/a_" ? _MaxResponseTimeMs : "0")
+            let SumResponseTimeMs = ToInt32(_SumResponseTimeMs != null && _SumResponseTimeMs != "_n/a_" ? _SumResponseTimeMs : "0")
+
+            let Tenant = GetEnvironmentVariable("MA_TENANT_IDENTITY")
+            let Role = GetEnvironmentVariable("MA_ROLE_IDENTITY")
+            let RoleInstance = GetEnvironmentVariable("MA_ROLEINSTANCE_IDENTITY")
+
+            let DnsServerTag = DnsServerClassification == "_n/a_" ? "_n/a_" : SplitAndIndex(";", 2, DnsServerClassification)
+						
+						select Tenant, Role, RoleInstance, 
+						       DnsServerIp, DnsServerPort, 
+									 Process, ProcessPersistentKey, 
+									 TransactionPattern, 
+									 DnsServerClassification, DnsServerTag,
+									 Status,
+									 CountRequest, CountError,
+									 MinResponseTimeMs, MaxResponseTimeMs, SumResponseTimeMs
+					]]>
+        </Query>
+      </DerivedEvent>
+
+      <!-- 
+      This table shares columns with the DNS table, but also includes Process, so look for both TransactionPattern and Process to 
+       ensure we see only rows from that table
+      -->
+      <DerivedEvent source="MdaSvcDepRaw"
+                    eventName="MdaSvcDepDnsErrors"
+                    storeType="CentralBond"
+                    duration="PT1M">
+        <Query>
+          <![CDATA[
+            let FileVersion = ToString(FileVersion ?? "_n/a_")
+            let DnsServerIp = ToString(DestinationIp ?? "_n/a_")
+            let DnsServerPort = ToString(DestinationPort ?? "_n/a_")
+            let TransactionPattern = ToString(TransactionPattern ?? "_n/a_")
+						let DnsQuestion = ToString(DnsQuestions ?? "_n/a_")
+            let DnsQuestionClassification = ToString(RemoteEndpointClassification ?? "_n/a_")
+						let Status = ToString(Status ?? "_n/a_")
+
+            where (FileVersion != "_n/a_") && (DnsServerPort != "_n/a_") && (DnsServerIp != "_n/a_") && (TransactionPattern != "_n/a_") && (DnsQuestion != "_n/a_")
+
+            let CountRequest = ToInt32(_CountRequest != null && _CountRequest != "_n/a_"  ? _CountRequest : "0")
+
+            let Tenant = GetEnvironmentVariable("MA_TENANT_IDENTITY")
+            let Role = GetEnvironmentVariable("MA_ROLE_IDENTITY")
+            let RoleInstance = GetEnvironmentVariable("MA_ROLEINSTANCE_IDENTITY")
+
+            let DnsQuestionTag = DnsQuestionClassification == "_n/a_" ? "_n/a_" : SplitAndIndex(";", 2, DnsQuestionClassification)
+						
+						select Tenant, Role, RoleInstance, 
+						       DnsServerIp, DnsServerPort, 
+									 TransactionPattern, 
+									 DnsQuestion,
+									 DnsQuestionClassification, DnsQuestionTag,
+									 Status,
+									 CountRequest
+					]]>         
+        </Query>
+      </DerivedEvent>
+
+      <!-- 
+		Upload DNS metrics. Break DnsQuestions to individual FQDNs if multi-valued. 
+		This is intended to pull from the NetworkConnections table, so ensure that we do not also include rows from the DNS table by excluding
+		 rows with a TransactionPattern set as this is only included in the DNS table.  Combined with requiring the DnsQuestions column, this 
+		 will give us the NetworkConnections table.
+	  -->
+      <DerivedEvent source="MdaSvcDepRaw"
+                    eventName="MdaSvcDepDns"
+                    storeType="CentralBond"
+						duration="PT1M">
+        <Query>
+          <![CDATA[
+          let DestinationIp = DestinationIp ?? "_n/a_"
+          let DnsQuestions = DnsQuestions ?? "_n/a_"
+          let DnsResponses = DnsResponses ?? "_n/a_"
+          let Status = Status ?? "_n/a_"
+          where DnsQuestions != "_Unknown_" && DnsQuestions != "_n/a_" && DestinationIp != "_Unknown_" && DestinationIp != "_n/a_" && TransactionPattern == null
+
+          groupby DestinationIp, RemoteEndpointClassification, DnsQuestions, DnsResponses
+
+          let fqdn1 = SplitAndIndex(";", 0, DnsQuestions)
+          let fqdn2 = Contains(DnsQuestions, Concat(";", fqdn1, "")) ? SplitAndIndex(";", 1, DnsQuestions) : ""
+          let fqdn3 = Contains(DnsQuestions, Concat(";", fqdn1, fqdn2, "")) ? SplitAndIndex(";", 2, DnsQuestions) : ""
+          let fqdn4 = Contains(DnsQuestions, Concat(";", fqdn1, fqdn2, fqdn3, "")) ? SplitAndIndex(";", 3, DnsQuestions) : ""
+          let fqdn5 = Contains(DnsQuestions, Concat(";", fqdn1, fqdn2, fqdn3, fqdn4, "")) ? SplitAndIndex(";", 4, DnsQuestions) : ""
+
+          let RemoteTag = RemoteEndpointClassification == "_Unknown_" ? "_Unknown_" : SplitAndIndex(";", 2, RemoteEndpointClassification)
+          let Tenant = GetEnvironmentVariable("MA_TENANT_IDENTITY")
+          let Role = GetEnvironmentVariable("MA_ROLE_IDENTITY")
+          let RoleInstance = GetEnvironmentVariable("MA_ROLEINSTANCE_IDENTITY")
+          let ResolutionState = Status != "_n/a_" ? Status : "0"
+
+          let dnsResolve1 = SetMdmMeasureMetric(
+            GetEnvironmentVariable("MA_AGENT_METRICS_ACCOUNT"),
+            "ServiceDependency2",
+            "DNS/Resolution",
+            1,
+            "Tenant",
+            Tenant,
+            "Role",
+            Role,
+            "RoleInstance",
+            RoleInstance,
+            "DnsQuestion",
+            fqdn1,
+            "DnsResponse",
+            DnsResponses,
+            "ResolutionState",
+            ResolutionState,
+            "Vip",
+            DestinationIp,
+            "RemoteTag",
+            RemoteTag
+            )
+
+          let dnsResolve2 = (fqdn2 == "" ? false :
+                SetMdmMeasureMetric(
+                    GetEnvironmentVariable("MA_AGENT_METRICS_ACCOUNT"),
+                    "ServiceDependency2",
+                    "DNS/Resolution",
+                    1,
+                    "Tenant",
+                    Tenant,
+                    "Role",
+                    Role,
+                    "RoleInstance",
+                    RoleInstance,
+                    "DnsQuestion",
+                    fqdn2,
+                    "DnsResponse",
+                    DnsResponses,
+                    "ResolutionState",
+                    ResolutionState,
+                    "Vip",
+                    DestinationIp,
+                    "RemoteTag",
+                    RemoteTag
+                )
+              )
+
+          let dnsResolve3 = (fqdn3 == "" ? false :
+                SetMdmMeasureMetric(
+                    GetEnvironmentVariable("MA_AGENT_METRICS_ACCOUNT"),
+                    "ServiceDependency2",
+                    "DNS/Resolution",
+                    1,
+                    "Tenant",
+                    Tenant,
+                    "Role",
+                    Role,
+                    "RoleInstance",
+                    RoleInstance,
+                    "DnsQuestion",
+                    fqdn3,
+                    "DnsResponse",
+                    DnsResponses,
+                    "ResolutionState",
+                    ResolutionState,
+                    "Vip",
+                    DestinationIp,
+                    "RemoteTag",
+                    RemoteTag
+                )
+              )
+
+          let dnsResolve4 = (fqdn4 == "" ? false :
+                SetMdmMeasureMetric(
+                    GetEnvironmentVariable("MA_AGENT_METRICS_ACCOUNT"),
+                    "ServiceDependency2",
+                    "DNS/Resolution",
+                    1,
+                    "Tenant",
+                    Tenant,
+                    "Role",
+                    Role,
+                    "RoleInstance",
+                    RoleInstance,
+                    "DnsQuestion",
+                    fqdn4,
+                    "DnsResponse",
+                    DnsResponses,
+                    "ResolutionState",
+                    ResolutionState,
+                    "Vip",
+                    DestinationIp,
+                    "RemoteTag",
+                    RemoteTag
+                )
+              )
+
+          let dnsResolve5 = (fqdn5 == "" ? false :
+                SetMdmMeasureMetric(
+                    GetEnvironmentVariable("MA_AGENT_METRICS_ACCOUNT"),
+                    "ServiceDependency2",
+                    "DNS/Resolution",
+                    1,
+                    "Tenant",
+                    Tenant,
+                    "Role",
+                    Role,
+                    "RoleInstance",
+                    RoleInstance,
+                    "DnsQuestion",
+                    fqdn5,
+                    "DnsResponse",
+                    DnsResponses,
+                    "ResolutionState",
+                    ResolutionState,
+                    "Vip",
+                    DestinationIp,
+                    "RemoteTag",
+                    RemoteTag
+                )
+              )
+        ]]>
+        </Query>
+      </DerivedEvent>
+
+    </DerivedEvents>
+
+    <Extensions>
+      <Extension extensionName="DependencyAgentExtension">
+        <CommandLine><![CDATA[DAExtension.exe]]></CommandLine>
+        <ResourceUsage cpuPercentUsage="2" cpuThrottling="true" memoryLimitInMB="100" memoryThrottling="true" recycleOnMemory="false" />
+      </Extension>
+    </Extensions>
+  </Events>
+</MonitoringManagement>

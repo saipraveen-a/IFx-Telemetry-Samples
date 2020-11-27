@@ -1,0 +1,17 @@
+AzureSecurityPack Version 4.7.2.2
+Component package versions:
+<?xml version="1.0" encoding="utf-8"?>
+<packages>
+<package id="Microsoft.WindowsAzure.EngSys.Internal.rd_security_n.Auditing_Redist" version="17.2.12.9" targetFramework="net45" />
+<package id="AsmSlamAzSecPack" version="4.2.0.45" targetFramework="net45" />
+<package id="AsmAntimalwareInternal" version="1.5.5.26" targetFramework="net45" />
+<package id="AsmScannersInternal" version="4.7.2.2" targetFramework="net45" />
+<package id="Microsoft.EngSys.SystemLockdown.AppLocker" version="1.0.1.48" targetFramework="net45" />
+<package id="ACS.AzCertInstaller" version="1.1.0" targetFramework="net45" />
+<package id="Microsoft.EngSys.SystemLockdown.CodeIntegrity" version="2.0.0.39" targetFramework="net45" />
+<package id="EngSys.SystemLockdown.Syslockscanner" version="1.0.2.4" targetFramework="native"/>
+<package id="NetIsoScanner" version="2019.5.28.1" targetFramework="native"/>
+<package id="Microsoft.Wcd.Sense.MsSenseS" version="10.3720.16299.1008" targetFramework="native"/>
+<package id="ProcessInvestigator.Native.AzSecPack" version="1.19.521.2" targetFramework="native"/>
+<package id="ShaVsa.OffNode.AzSecPack" version="1.2.4.60" targetFramework="native"/>
+</packages>

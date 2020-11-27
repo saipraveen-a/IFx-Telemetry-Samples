@@ -1,0 +1,40 @@
+﻿Info  (2020-11-24T13:30:12Z): MonAgentHost.exe - Monitoring Agent Version 42.07.10 - Sep 23 2019 14:05:00 -  amd64 - OS 10.0.19042
+Info  (2020-11-24T13:30:12Z): MonAgentHost.exe - See http://aka.ms/GenevaAgentHelp for help interpreting and asking questions about logged messages.
+Info  (2020-11-24T13:30:12Z): MonAgentHost.exe - Successfully parsed command line arguments.
+Info  (2020-11-24T13:30:12Z): MonAgentHost.exe - Actual command is : -serviceShutdown MonAgentShutdownEvent.13748 -parent 13748 -deploymentdir "C:\Users\saianu\.nuget\packages\genevamonitoringagent\42.7.10\Monitoring\Agent" -LocalPath "D:\Samples\madata" -ConfigFile "D:\Samples\maconfig\basicconfig.xml"  
+Info  (2020-11-24T13:30:12Z): MonAgentHost.exe - Current agent working directory is 'C:\Users\saianu\.nuget\packages\genevamonitoringagent\42.7.10\Monitoring\Agent'
+Info  (2020-11-24T13:30:12Z): MonAgentHost.exe - Starting agent manager: 'C:\Users\saianu\.nuget\packages\genevamonitoringagent\42.7.10\Monitoring\Agent\MonAgentManager.exe -serviceShutdown MonAgentShutdownEvent.13748 -parent 13748 -deploymentdir "C:\Users\saianu\.nuget\packages\genevamonitoringagent\42.7.10\Monitoring\Agent" -LocalPath "D:\Samples\madata" -ConfigFile "D:\Samples\maconfig\basicconfig.xml" -LogPath "D:\Samples\madata\Configuration\MonAgentHost.3.log"'
+Info  (2020-11-24T13:30:12Z): MonAgentManager.exe - Monitoring Agent Version 42.07.10 - Sep 23 2019 14:07:43 -  amd64 - OS 10.0.19042
+Info  (2020-11-24T13:30:12Z): MonAgentManager.exe - See http://aka.ms/GenevaAgentHelp for help interpreting and asking questions about logged messages.
+Info  (2020-11-24T13:30:12Z): MonAgentManager.exe - Disk free space available for MA is 431561MB out of total partition size of 488255MB in D:\Samples\madata
+Info  (2020-11-24T13:30:12Z): MonAgentManager.exe - Table directory is 'D:\Samples\madata\Tables'
+Info  (2020-11-24T13:30:12Z): MonAgentManager.exe - Agent working directory is C:\Users\saianu\.nuget\packages\genevamonitoringagent\42.7.10\Monitoring\Agent; running from deployment directory
+Info  (2020-11-24T13:30:12Z): MonAgentManager.exe - Waiting for parent process 13748 of the manager to terminate.
+Error (2020-11-24T13:30:12Z): MonAgentManager.exe - Failed to load configuration file D:\Samples\maconfig\basicconfig.xml: res=80040001
+Info  (2020-11-24T13:30:12Z): MonAgentManager.exe - Successfully parsed command line arguments.
+Info  (2020-11-24T13:30:12Z): MonAgentManager.exe - Actual command is :   -deploymentdir "C:\Users\saianu\.nuget\packages\genevamonitoringagent\42.7.10\Monitoring\Agent" -LocalPath "D:\Samples\madata"   -managerver 1  -parent 22960 
+Info  (2020-11-24T13:30:12Z): MonAgentManager.exe - Starting agent: 'C:\Users\saianu\.nuget\packages\genevamonitoringagent\42.7.10\Monitoring\Agent\MonAgentCore.exe   -deploymentdir "C:\Users\saianu\.nuget\packages\genevamonitoringagent\42.7.10\Monitoring\Agent" -LocalPath "D:\Samples\madata"   -managerver 1  -parent 22960 -ConfigFile "D:\Samples\maconfig\basicconfig.xml" '
+Info  (2020-11-24T13:30:12Z): MonAgentManager.exe - Verified that all agent files are consistent with the released agent package.
+Info  (2020-11-24T13:30:14Z): MonAgentManager.exe - Dumping MA error and warning events from D:\Samples\madata\Tables\MAEventTable; use the summary logs or node diagnostics to get all of the events.
+Info  (2020-11-24T13:30:14Z): MonAgent - MA is running with original configuration file 'D:\Samples\maconfig\basicconfig.xml'; this file is part of the role deployment
+Error (2020-11-24T13:30:14Z): ConfigurationReader - MAEventTable: Level:2 ActivityId: 1a19d032-be9b-440e-969b-bbfb6bd0ba1c MDRESULT:0x00000000 ErrorCode(-2147467259):Unspecified error Message:Parsing failed for file D:\Samples\maconfig\basicconfig.xml Invalid at the top level of the document.
+Error (2020-11-24T13:30:14Z): MonAgent - MAEventTable: Level:2 ActivityId: 1a19d032-be9b-440e-969b-bbfb6bd0ba1c MDRESULT:0x80040001 ErrorCode(0): Message:Failed to open the configuration file D:\Samples\maconfig\basicconfig.xml with either the version 1 or 2 schemas
+Error (2020-11-24T13:30:14Z): MonAgent - MAEventTable: Level:2 ActivityId: 1a19d032-be9b-440e-969b-bbfb6bd0ba1c MDRESULT:0x80040001 ErrorCode(0): Message:Failed to store the account information in configuration file 'D:\Samples\maconfig\basicconfig.xml'
+Error (2020-11-24T13:30:14Z): MonAgent - MAEventTable: Level:2 ActivityId: 1a19d032-be9b-440e-969b-bbfb6bd0ba1c MDRESULT:0x80040001 ErrorCode(0): Message:Failed to initialize agent paths
+Error (2020-11-24T13:30:14Z): MonAgentCore.exe - MAEventTable: Level:2 ActivityId: 1a19d032-be9b-440e-969b-bbfb6bd0ba1c MDRESULT:0x80010008 ErrorCode(0): Message:Could not start the monitoring agent: mdresult:80040001.
+Info  (2020-11-24T13:30:14Z): MonAgentManager.exe - MonAgentCore has exited.
+Info  (2020-11-24T13:30:14Z): MonAgentManager.exe - Dumping MA error and warning events from D:\Samples\madata\Tables\MAEventTable; use the summary logs or node diagnostics to get all of the events.
+Info  (2020-11-24T13:30:19Z): MonAgentManager.exe - Starting agent: 'C:\Users\saianu\.nuget\packages\genevamonitoringagent\42.7.10\Monitoring\Agent\MonAgentCore.exe   -deploymentdir "C:\Users\saianu\.nuget\packages\genevamonitoringagent\42.7.10\Monitoring\Agent" -LocalPath "D:\Samples\madata"   -managerver 1  -parent 22960 -ConfigFile "D:\Samples\maconfig\basicconfig.xml" '
+Info  (2020-11-24T13:30:22Z): MonAgentManager.exe - Dumping MA error and warning events from D:\Samples\madata\Tables\MAEventTable; use the summary logs or node diagnostics to get all of the events.
+Info  (2020-11-24T13:30:22Z): MonAgent - MA is running with original configuration file 'D:\Samples\maconfig\basicconfig.xml'; this file is part of the role deployment
+Error (2020-11-24T13:30:22Z): ConfigurationReader - MAEventTable: Level:2 ActivityId: 82390b86-ef5f-4770-bf05-4df91651badf MDRESULT:0x00000000 ErrorCode(-2147467259):Unspecified error Message:Parsing failed for file D:\Samples\maconfig\basicconfig.xml Invalid at the top level of the document.
+Error (2020-11-24T13:30:22Z): MonAgent - MAEventTable: Level:2 ActivityId: 82390b86-ef5f-4770-bf05-4df91651badf MDRESULT:0x80040001 ErrorCode(0): Message:Failed to open the configuration file D:\Samples\maconfig\basicconfig.xml with either the version 1 or 2 schemas
+Error (2020-11-24T13:30:22Z): MonAgent - MAEventTable: Level:2 ActivityId: 82390b86-ef5f-4770-bf05-4df91651badf MDRESULT:0x80040001 ErrorCode(0): Message:Failed to store the account information in configuration file 'D:\Samples\maconfig\basicconfig.xml'
+Error (2020-11-24T13:30:22Z): MonAgent - MAEventTable: Level:2 ActivityId: 82390b86-ef5f-4770-bf05-4df91651badf MDRESULT:0x80040001 ErrorCode(0): Message:Failed to initialize agent paths
+Error (2020-11-24T13:30:22Z): MonAgentCore.exe - MAEventTable: Level:2 ActivityId: 82390b86-ef5f-4770-bf05-4df91651badf MDRESULT:0x80010008 ErrorCode(0): Message:Could not start the monitoring agent: mdresult:80040001.
+Info  (2020-11-24T13:30:22Z): MonAgentManager.exe - MonAgentCore has exited.
+Info  (2020-11-24T13:30:22Z): MonAgentManager.exe - Dumping MA error and warning events from D:\Samples\madata\Tables\MAEventTable; use the summary logs or node diagnostics to get all of the events.
+Info  (2020-11-24T13:30:24Z): MonAgentHost.exe - Exiting MonAgentHost with process id 13748 after handling control 1; CTRL-BREAK
+Info  (2020-11-24T13:30:24Z): MonAgentHost.exe - MonAgentHost was stopped.
+Info  (2020-11-24T13:30:24Z): MonAgentManager.exe - Exiting the monitoring agent host 22960 after handling control 1; CTRL-BREAK
+Info  (2020-11-24T13:30:27Z): MonAgentManager.exe - MonAgentManager is exiting.

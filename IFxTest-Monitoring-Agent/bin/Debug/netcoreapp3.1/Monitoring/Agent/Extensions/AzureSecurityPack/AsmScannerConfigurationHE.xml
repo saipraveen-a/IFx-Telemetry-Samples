@@ -1,0 +1,109 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<AsmScannerConfiguration>
+  <ScanManager heartbeatFrequency="PT4H">
+    <Resources>
+      <!-- TBD. A placeholder for providing job constraints, working directory, and session parameters -->
+    </Resources>
+  </ScanManager>
+    <Scanners>
+    <ScannerInfo name="UserGroupScanner"
+                     path="UserGroupScanner.exe"
+                     persistent="true"
+                     frequency="PT0S"
+                     firstRunDelay="PT0S"
+                     priority="normal"
+           featureName="AsmUserGroup"
+                     maxRuns="0">
+            <Arguments></Arguments>
+        </ScannerInfo>
+      
+    <ScannerInfo name="AsmBaselineScanner"
+                     path="DSCLauncher.exe"
+                     persistent="false"
+                     frequency="P1D"
+           featureName="AsmBaseline"
+                     maxRuns="0">
+            <Arguments>-scenario:OSBaseline</Arguments>
+        </ScannerInfo>
+    <ScannerInfo name="SWInventoryScanner"
+                     path="SWInventoryScanner.exe"
+                     scannerconfig = "InventoryScannerConfig.xml"
+                     persistent="false"
+           featureName="AsmSWInventory"
+                     maxRuns="0">
+            <Arguments></Arguments>
+        </ScannerInfo>
+		<ScannerInfo name="EventDrivenScanner"
+                     path="EventDrivenScanner.exe"
+                     persistent="true"
+                     frequency="PT0S"
+                     firstRunDelay="PT0S"
+                     priority="normal"
+					 featureName="AsmEventDriven"
+                     maxRuns="0">
+            <Arguments>-config:EventDrivenScannerConfig.xml</Arguments>
+        </ScannerInfo>
+       <!-- <ScannerInfo name="EventFilterScanner"
+                     path="EventFilterScanner.exe"
+                     persistent="true"
+                     frequency="PT0S"
+                     firstRunDelay="PT0S"
+                     priority="normal"
+           featureName="AsmEventFilter"
+                     maxRuns="0">
+            <Arguments></Arguments>
+        </ScannerInfo>-->
+        <ScannerInfo name="NetIsoScanner"
+                    path="NetIsoScanner.exe"
+                    persistent="false"
+                    frequency="PT12H"
+                    firstRunDelay="PT18M"
+                    priority="normal"
+                    maxRuns="0"
+                    featureName="NetIsoScanner">
+            <Arguments></Arguments>
+        </ScannerInfo>
+        <ScannerInfo name="MsSenseS"
+                    path="MsSenseS.exe"
+                    persistent="true"
+                    frequency="PT0S"
+                    firstRunDelay="PT0S"
+                    priority="normal"
+                    maxRuns="0"
+                    featureName="WDATP"
+                    isPilot="true">
+            <Arguments></Arguments>
+        </ScannerInfo>
+        <ScannerInfo name="ProcessInvestigator"
+                    path="PILauncher.exe"
+                    persistent="false"
+                    frequency="PT1H"
+                    firstRunDelay="PT0S"
+                    priority="normal"
+                    maxRuns="0"
+                    featureName="ProcessInvestigator"
+                    isPilot="true">
+            <Arguments></Arguments>
+        </ScannerInfo>
+        <ScannerInfo name="ShavaVulnScan"
+                    path="ShavaVulnScan.exe"
+                    persistent="false"
+                    frequency="PT8H"
+                    firstRunDelay="PT10M"
+                    priority="normal"
+                    maxRuns="0"
+                    featureName="OffNodeVulnScan">
+            <Arguments></Arguments>
+        </ScannerInfo>
+        <ScannerInfo name="SqlVaScanner"
+                    path="SqlVaWrapper.exe"
+                    persistent="false"
+                    frequency="P1D"
+                    firstRunDelay="PT30M"
+                    priority="normal"
+                    featureName="SqlVaScanner"
+                    maxRuns="0">
+            <Arguments></Arguments>
+        </ScannerInfo>
+    </Scanners>
+</AsmScannerConfiguration>

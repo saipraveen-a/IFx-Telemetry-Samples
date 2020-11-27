@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<instrumentationManifest
+    xmlns="http://schemas.microsoft.com/win/2004/08/events"
+    xmlns:win="http://manifests.microsoft.com/win/2004/08/windows/events"
+    xmlns:xs="http://www.w3.org/2001/XMLSchema"
+    >
+
+    <instrumentation>
+        <events>
+            <provider name="Microsoft-Azure-Security-Scanners"
+                guid="{9a65c11b-e330-4ecd-a666-3c3d2c320622}"
+                resourceFileName="SecurityScannerCommonLib.dll"
+                messageFileName="SecurityScannerCommonLib.dll"
+                symbol="AsmScannerEventProvider"
+                message="$(string.ProviderName)"
+                >
+                <templates>
+                  <template tid="AsmEtwTemplate">
+                    <data name="ReportingIdentity" inType="win:UnicodeString" />
+                    <data name="AssetIdentity" inType="win:UnicodeString" />
+                    <data name="NodeIdentity" inType="win:UnicodeString" />
+                    <data name="NodeType" inType="win:UnicodeString" />
+                    <data name="EventProvider" inType="win:UnicodeString" />
+                    <data name="EventType" inType="win:UnicodeString" />
+                    <data name="EventPayload" inType="win:UnicodeString" />
+                    <data name="Truncated" inType="win:Boolean" />
+                    <data name="TotalChunks" inType="win:UInt32" />
+                    <data name="ChunkId" inType="win:UInt32" />
+					<data name="ChunkReference" inType="win:UnicodeString" />
+                    <data name="UserField1" inType="win:UnicodeString" />
+                    <data name="UserField2" inType="win:UnicodeString" />
+                    <data name="UserField3" inType="win:UnicodeString" />
+                    <data name="UserField4" inType="win:UnicodeString" />
+                    <data name="UserField5" inType="win:UnicodeString" />
+                  </template>
+                </templates>
+                <events>
+                  <event value="100"
+                         level="win:Informational"
+                         template="AsmEtwTemplate"
+                         symbol="AsmDiagnostics" />
+                  
+                  <!-- All the event manifest for scanner and inventory data -->
+                  <event value="101"
+                         level="win:Informational"
+                         template="AsmEtwTemplate"
+                         symbol="AsmScannerData" />
+
+                  <event value="102"
+                         level="win:Informational"
+                         template="AsmEtwTemplate"
+                         symbol="AsmInventoryData" />
+                  
+                  <!-- Event manifest for alerting data -->
+                  <event value="103"
+                         level="win:Informational"
+                         template="AsmEtwTemplate"
+                         symbol="AsmAlertsData" />
+
+                  <!-- Event manifest for Heartbeat data -->
+                  <event value="120"
+                         level="win:Informational"
+                         template="AsmEtwTemplate"
+                         symbol="AsmHeartbeatData" />
+                  
+                </events>
+            </provider>
+        </events>
+    </instrumentation>
+
+    <localization>
+        <resources culture="en-US">
+            <stringTable>
+                <string id="ProviderName" value="Azure Security Scanner Provider" />
+            </stringTable>
+        </resources>
+    </localization>
+
+</instrumentationManifest>

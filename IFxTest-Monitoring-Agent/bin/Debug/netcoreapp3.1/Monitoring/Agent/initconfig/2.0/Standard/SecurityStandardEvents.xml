@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<MonitoringManagement version="1.0" namespace="Ma" timestamp="2014-02-02T20:08:38.0823856Z" >
+
+  <Events>
+
+    <!-- For security compliance, use the Azure Security Pack -->
+
+  </Events>
+
+</MonitoringManagement>

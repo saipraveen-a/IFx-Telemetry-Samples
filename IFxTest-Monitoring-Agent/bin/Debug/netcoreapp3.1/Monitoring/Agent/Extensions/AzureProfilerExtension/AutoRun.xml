@@ -1,0 +1,10 @@
+<MonitoringManagement version="1.0" timestamp="2016-03-19T00:00:00.0000000Z">
+  <Events>
+    <Extensions>  
+      <Extension extensionName="AzureProfilerExtension">
+        <CommandLine><![CDATA[AzureProfilerExtension.exe /GroupName:Unknown /Directory:%TEMP% /IntervalMinutes:720 /IntervalCount:10 /Counters:Counters.txt %PROFILER_ARGS%]]></CommandLine>
+        <ResourceUsage cpuPercentUsage="5" cpuThrottling="true" memoryLimitInMB="96" memoryThrottling="true" />
+      </Extension>
+    </Extensions>
+  </Events>
+</MonitoringManagement>

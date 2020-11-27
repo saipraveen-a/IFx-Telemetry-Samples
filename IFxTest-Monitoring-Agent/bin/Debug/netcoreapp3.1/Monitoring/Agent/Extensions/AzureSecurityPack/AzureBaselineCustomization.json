@@ -1,0 +1,110 @@
+{
+  "Id" : "{9c2bc3d1-8668-48e5-ac5f-281718d52174}",
+  "Rules": [
+    {
+      "RuleId": "{d3d9ac7b-8bcc-42e8-8752-29902eda04dd}",
+      "Remediate" : "true"
+    },
+    {
+      "RuleId": "{42d93501-c545-4a29-8cb0-74d314dbd955}",
+      "Remediate" : "true"
+    },
+    {
+      "RuleId": "{18c9af48-eee0-41fd-81f9-b0a004291c22}",
+      "Remediate" : "true"
+    },
+    {
+      "RuleId": "{1926dc04-79ea-4a6e-9e35-892c27876bf5}",
+      "Remediate" : "true"
+    },
+    {
+      "RuleId": "{10191095-e6fa-47d3-aa8e-d58b36241f2a}",
+      "Remediate" : "true"
+    },
+    {
+      "RuleId": "{3dab02aa-72b8-46b6-844f-695554bf59dd}",
+      "Remediate" : "true"
+    },
+    {
+      "RuleId": "{58221c40-e279-43e2-b297-e48a0904cbb6}",
+      "Remediate" : "true"
+    },
+    {
+      "RuleId": "{260bbf9d-209d-4589-bf81-0f5329a36b87}",
+      "Remediate" : "true"
+    },
+    {
+      "RuleId": "{08b5f46b-8228-437c-8ed8-50c31b03423e}",
+      "Remediate" : "true"
+    },
+    {
+      "RuleId": "{3b8a1eba-64e5-4117-b7bc-2cf5042de658}",
+      "Remediate" : "true"
+    },
+    {
+      "RuleId": "{915714e9-c2ae-42af-a391-c289db580e08}",
+      "Remediate" : "true"
+    },
+    {
+      "RuleId": "{cb4110e4-23c8-46ab-9202-497a70efd077}",
+      "Remediate" : "true"
+    },
+    {
+      "RuleId": "{e30d6758-fb3c-4e9d-8493-f717cd504cf4}",
+      "Remediate" : "true"
+    },
+    {
+      "RuleId": "{5c550429-ee09-41d6-8864-f0a8c1db6ba8}",
+      "Remediate" : "true"
+    },
+    {
+      "RuleId": "{240c56fa-202b-4583-86d2-3f8fb4cc60fe}",
+      "Remediate" : "true"
+    },
+    {
+      "RuleId": "{6e635d8c-3496-4c66-b734-c46ebccc5d38}",
+      "Remediate" : "true"
+    },
+    {
+      "RuleId": "{342046f5-c7d3-46b7-96db-7e4be82542d3}",
+      "Remediate" : "true"
+    },
+    {
+      "RuleId": "{a14a2808-588b-4233-b342-9dc1cecf2b0a}",
+      "Remediate" : "true"
+    },
+    {
+      "RuleId": "{032b5976-1c4b-4c68-bc5d-0c65e35306b2}",
+      "Remediate" : "true"
+    },
+    {
+      "RuleId": "{f97fe90f-c009-4139-8562-9893e9c49b44}",
+      "Remediate" : "true"
+    },
+    {
+      "RuleId": "{3e6b8e00-6ffa-43a8-8cc0-8e34d2e55bf5}",
+      "Remediate" : "true"
+    },
+    {
+      "RuleId": "{43e5a1a0-3b79-4ba9-ab3d-7a5dd18b144a}",
+      "Remediate" : "true"
+    },
+    {
+      "RuleId": "{f55109a7-2248-4c55-a7b0-bebdcb9530d5}",
+      "Remediate" : "true"
+    },
+    {
+      "RuleId": "{3e42b5fc-08b2-4a9a-ad80-dafe9033cbc3}",
+      "Remediate" : "true"
+    },
+    {
+      "RuleId": "{7470f80e-a3d3-4ca9-84e8-7a97a317b2e1}",
+      "Remediate" : "true"
+    },
+    {
+      "RuleId": "{56c1cb3d-3ead-42fe-a57e-360ff5dbcff0}",
+      "Remediate" : "true"
+    }
+
+  ]
+}

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+  KernelEventScanner 
+  startfunctionname : Dll interface for start HeavyTalker processing
+  stopfunctionname : stop HeavyTalker processing
+  allowmulticast : 0 or 1 to indicate if multicase traffic should be tracked.
+  allowloopback : similar to multicast but for loopback traffic
+  aggregatelevel : Can be 0, 1, 2 to indicate light, med, heavy aggreation on network packet. 0 indicate only differ the process ID and incoming outgoing traffic.
+                   1 indicate differ the SIP and DIP, 2 means differ also on SPort and DPort
+  Frequency : How often should generate ETW log, the unit is mins. 
+  Current KernelEventScanner is config to profile only, which only take number of connections and estimate the number of IP the application talk with
+--> 
+
+<AsmKernelScannerConfiguration>
+	<HeavyTalkerScannerInfo scenarioname = "HeavyTalker"
+		librarypath = "KernelEventScanner.dll"
+		startfunctionname = "StartHeavyTalkerProducer"
+		stopfunctionname = "StopHeavyTalkerProducer"
+		allowmulticast = "0"
+		allowloopback = "0"
+		aggregatelevel = "0"
+		frequency = "720">
+	</HeavyTalkerScannerInfo>
+</AsmKernelScannerConfiguration>

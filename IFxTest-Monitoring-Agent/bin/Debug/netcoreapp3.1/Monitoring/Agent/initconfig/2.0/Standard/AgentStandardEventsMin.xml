@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<MonitoringManagement version="1.0" namespace="Ma" timestamp="2011-09-27T20:08:38.0000000Z" >
+
+  <Events>
+
+    <DerivedEvents>
+
+      <DerivedEvent duration="PT24H"
+                    eventName="MaQosEvent"
+                    storeType="Local"
+                    retryTimeout="PT0M" >
+        <Query>
+          <![CDATA[let Level = 1 where Level == 0]]>
+        </Query>
+      </DerivedEvent>
+
+      <DerivedEvent duration="PT24H"
+                    eventName="MaCounterEvent"
+                    storeType="Local"
+                    retryTimeout="PT0M" >
+        <Query>
+          <![CDATA[let Level = 1 where Level == 0]]>
+        </Query>
+      </DerivedEvent>
+
+
+      <DerivedEvent duration="PT24H"
+                    eventName="MAEventTable"
+                    storeType="Local"
+                    retryTimeout="PT0M" >
+        <Query>
+          <![CDATA[let Level = 1 where Level == 0]]>
+        </Query>
+      </DerivedEvent>
+
+      <DerivedEvent duration="PT24H"
+                    eventName="MaMetricsExtensionEtw"
+                    storeType="Local"
+                    retryTimeout="PT0M" >
+        <Query>
+          <![CDATA[let Level = 1 where Level == 0]]>
+        </Query>
+      </DerivedEvent>
+
+     <DerivedEvent duration="PT24H"
+                    eventName="MaHealthExtensionEtw"
+                    storeType="Local"
+                    retryTimeout="PT0M" >
+        <Query>
+          <![CDATA[let Level = 1 where Level == 0]]>
+        </Query>
+      </DerivedEvent>
+    </DerivedEvents>
+  </Events>
+
+</MonitoringManagement>

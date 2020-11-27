@@ -1,0 +1,235 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!-- AsmInventoryConfiguration indicates this is a Inventory schema [Required] -->
+<AsmExtendedScannerConfiguration>
+	<!-- Each Item is a Inventory Scan Scenario; lists the details of the Inventory to be collected-->
+	<!--
+		<ExtendedScannerInfo scenarioname = <Name of the Inventory that is collected here, logged as EventName in MDS>
+				   librarypath = <Path to the Native Dll to be loaded that exports the function to be called.>
+				   functionname = <Name of the function that returns the packed inventory data>
+				   firstRunDelay =<ISO 8601 time span specifiying the delay when run for the first time>
+				   frequency = ISO 8601 time span specifying the frequency of this call>
+		</ExtendedScannerInfo>
+	-->
+	<ExtendedScannerInfo scenarioname = "Drivers"
+				   librarypath = "DriversScanner-Inventory.dll"
+				   functionname = "getDriversInventory"
+				   firstRunDelay ="PT5M"
+				   frequency = "PT24H">
+	</ExtendedScannerInfo>
+	<ExtendedScannerInfo scenarioname = "Services"
+				   librarypath = "ServicesScanner-Inventory.dll"
+				   functionname = "getServicesInventory"
+				   firstRunDelay ="PT6M"
+				   frequency = "PT12H">
+	</ExtendedScannerInfo>
+	<ExtendedScannerInfo scenarioname = "NetworkShare"
+				   librarypath = "NetworkShareScanner-Inventory.dll"
+				   functionname = "getNetworkShareInventory"
+				   firstRunDelay ="PT7M"
+				   frequency = "PT24H">
+	</ExtendedScannerInfo>
+	<ExtendedScannerInfo scenarioname = "Product"
+				   librarypath = "AsmSwScanner-Inventory.dll"
+				   functionname = "getInstalledSoftwareInventory"
+				   firstRunDelay ="PT8M"
+				   frequency = "PT24H">
+	</ExtendedScannerInfo>
+	<ExtendedScannerInfo scenarioname = "Feature"
+				   librarypath = "AsmSwScanner-Inventory.dll"
+				   functionname = "getOSFeatureInventory"
+				   firstRunDelay ="PT10M"
+				   frequency = "PT24H">
+	</ExtendedScannerInfo>
+	<ExtendedScannerInfo scenarioname = "Patch"
+				   librarypath = "AsmSwScanner-Inventory.dll"
+				   functionname = "getOSUpdateInventory"
+				   firstRunDelay ="PT12M"
+				   frequency = "PT24H">
+	</ExtendedScannerInfo>
+	<ExtendedScannerInfo scenarioname = "Version"
+				   librarypath = "AsmSwScanner-Inventory.dll"
+				   functionname = "getOSVersionInventory"
+				   firstRunDelay ="PT15M"
+				   frequency = "PT2H">
+	</ExtendedScannerInfo>
+	<ExtendedScannerInfo scenarioname = "Certificate"
+				   librarypath = "CertificateScanner-Inventory.dll"
+				   functionname = "getCertificateInventory"
+				   firstRunDelay ="PT20M"
+				   frequency = "PT24H">
+	</ExtendedScannerInfo>
+	<ExtendedScannerInfo scenarioname = "RpcEndpoint"
+				   librarypath = "RpcEndpointScanner-Inventory.dll"
+				   functionname = "getRpcEndpointInventory"
+				   firstRunDelay ="PT25M"
+				   frequency = "PT24H">
+	</ExtendedScannerInfo>
+	<ExtendedScannerInfo scenarioname = "NamedPipe"
+				   librarypath = "NamedPipeScanner-Inventory.dll"
+				   functionname = "getNamedPipeInventory"
+				   firstRunDelay ="PT30M"
+				   frequency = "PT24H">
+	</ExtendedScannerInfo>
+	<ExtendedScannerInfo scenarioname = "ExportedCertPubKeys"
+				   librarypath = "CertificateScanner-Inventory.dll"
+				   functionname = "getCertificatePublicKeysInventory"
+				   firstRunDelay ="PT35M"
+				   frequency = "PT24H">
+	</ExtendedScannerInfo>
+	<ExtendedScannerInfo scenarioname = "NTPStatus"
+				   librarypath = "NTPScanner-Alert.dll"
+				   functionname = "getNtpStatusInventory"
+				   firstRunDelay ="PT45M"
+				   frequency = "PT24H">
+	</ExtendedScannerInfo>
+	<ExtendedScannerInfo scenarioname = "NTPAlert"
+				   librarypath = "NTPScanner-Alert.dll"
+				   functionname = "checkNTPSettingAndAlert"
+				   extraargument = "-isalert:1"
+				   firstRunDelay ="PT55M"
+				   frequency = "PT24H">
+	</ExtendedScannerInfo>
+	<ExtendedScannerInfo scenarioname = "ASEPRegistry"
+				   librarypath = "RegistryScanner-Inventory.dll"
+				   functionname = "getASEPRegistryInventory"
+				   firstRunDelay ="PT38M"
+				   frequency = "PT24H">
+	</ExtendedScannerInfo>
+	<ExtendedScannerInfo scenarioname = "AntiVirusRegistry"
+				   librarypath = "RegistryScanner-Inventory.dll"
+				   functionname = "getAntiVirusRegistryInventory"
+				   firstRunDelay ="PT39M"
+				   frequency = "PT2H">
+	</ExtendedScannerInfo>
+	<ExtendedScannerInfo scenarioname = "AntiMalwareRegistry"
+				   librarypath = "RegistryScanner-Inventory.dll"
+				   functionname = "getAntiMalwareRegistryInventory"
+				   firstRunDelay ="PT40M"
+				   frequency = "PT2H">
+	</ExtendedScannerInfo>
+	<!-- Disable for now
+	<ExtendedScannerInfo scenarioname = "PowerShell"
+				   librarypath = "FileScanner-Inventory.dll"
+				   functionname = "getSPOFileInventory"
+				   extraargument = "-selfreport 1"
+				   firstRunDel ="PT41M"
+				   frequency = "PT24H">
+	</ExtendedScannerInfo>
+	-->
+	<ExtendedScannerInfo scenarioname = "HostFile"
+				   librarypath = "FileScanner-Inventory.dll"
+				   functionname = "getHostFileInventory"
+				   extraargument = "-selfreport:1"
+				   firstRunDelay ="PT42M"
+				   frequency = "PT24H">
+	</ExtendedScannerInfo>
+	<ExtendedScannerInfo scenarioname = "AutoRuns"
+				   librarypath = "AutorunsScanner-Inventory.dll"
+				   functionname = "getAutoRunsInventory"
+				   firstRunDelay ="PT45M"
+				   frequency = "PT24H">
+	</ExtendedScannerInfo>
+	<ExtendedScannerInfo scenarioname = "ApplockerRegistry"
+				   librarypath = "RegistryScanner-Inventory.dll"
+				   functionname = "getApplockerRegistryInventory"
+				   firstRunDelay ="PT46M"
+				   frequency = "PT24H">
+	</ExtendedScannerInfo>
+	<ExtendedScannerInfo scenarioname = "HardwareRegistry"
+				   librarypath = "RegistryScanner-Inventory.dll"
+				   functionname = "getHardwareRegistryInventory"
+				   firstRunDelay ="PT47M"
+				   frequency = "PT24H">
+	</ExtendedScannerInfo>
+	<ExtendedScannerInfo scenarioname = "SecureBootRegistry"
+				   librarypath = "RegistryScanner-Inventory.dll"
+				   functionname = "getSecureBootRegistryInventory"
+				   firstRunDelay ="PT48M"
+				   frequency = "PT24H">
+	</ExtendedScannerInfo>
+	<ExtendedScannerInfo scenarioname = "TPMRegistry"
+				   librarypath = "RegistryScanner-Inventory.dll"
+				   functionname = "getTPMRegistryInventory"
+				   firstRunDelay ="PT49M"
+				   frequency = "PT24H">
+	</ExtendedScannerInfo>
+	<ExtendedScannerInfo scenarioname = "ConfigCIEnabled"
+				   librarypath = "syslockscanner.dll"
+				   functionname = "getConfigCIEnabled"
+				   firstRunDelay ="PT50M"
+				   frequency = "PT24H">
+	</ExtendedScannerInfo>
+	<ExtendedScannerInfo scenarioname = "CiAlEtwEnabled"
+				   librarypath = "syslockscanner.dll"
+				   functionname = "getCiAlEtwStatus"
+				   firstRunDelay ="PT51M"
+				   frequency = "PT24H">
+	</ExtendedScannerInfo>
+	<ExtendedScannerInfo scenarioname = "BitlockerStatus"
+				   librarypath = "syslockscanner.dll"
+				   functionname = "getBitLockerStatus"
+				   firstRunDelay ="PT52M"
+				   frequency = "PT24H">
+	</ExtendedScannerInfo>
+	<ExtendedScannerInfo scenarioname = "WUSettingRegistry"
+				   librarypath = "RegistryScanner-Inventory.dll"
+				   functionname = "getWUSettingRegistryInventory"
+				   firstRunDelay ="PT53M"
+				   frequency = "PT24H">
+	</ExtendedScannerInfo>
+	<ExtendedScannerInfo scenarioname = "MSRCRegistry"
+				   librarypath = "RegistryScanner-Inventory.dll"
+				   functionname = "getCustomRegistryInventory"
+				   firstRunDelay ="PT54M"
+				   extraargument = "-configfile:msrc.conf"
+				   frequency = "PT24H">
+	</ExtendedScannerInfo>
+	<ExtendedScannerInfo scenarioname = "DSMSRegistry"
+				   librarypath = "RegistryScanner-Inventory.dll"
+				   functionname = "getCustomRegistryInventory"
+				   firstRunDelay ="PT55M"
+				   extraargument = "-configfile:dsms.conf"
+				   frequency = "PT24H">
+	</ExtendedScannerInfo>
+	
+	<!-- Disable WUA scanning for internal..
+	<ExtendedScannerInfo scenarioname = "PatchInfo"
+				   librarypath = "AsmSwScanner-Inventory.dll"
+				   functionname = "getPatchInfoInventory"
+				   firstRunDelay ="PT10M"
+				   frequency = "PT24H">
+	</ExtendedScannerInfo>
+	<ExtendedScannerInfo scenarioname = "PatchStatus"
+				   librarypath = "AsmSwScanner-Inventory.dll"
+				   functionname = "getPatchStatusInventory"
+				   firstRunDelay ="PT10M"
+				   frequency = "PT24H">
+	</ExtendedScannerInfo>
+	-->
+	<!-- Container Inventory -->
+	<ExtendedScannerInfo scenarioname = "DockerVersion"
+				   librarypath = "ContainerScanner-Inventory.dll"
+				   functionname = "getDockerVersionInventory"
+				   firstRunDelay ="PT60M"
+				   frequency = "PT24H">
+	</ExtendedScannerInfo>
+	<ExtendedScannerInfo scenarioname = "DockerImages"
+				   librarypath = "ContainerScanner-Inventory.dll"
+				   functionname = "getDockerImageInventory"
+				   firstRunDelay ="PT65M"
+				   frequency = "PT24H">
+	</ExtendedScannerInfo>
+	<ExtendedScannerInfo scenarioname = "DockerContainers"
+				   librarypath = "ContainerScanner-Inventory.dll"
+				   functionname = "getDockerContainerInventory"
+				   firstRunDelay ="PT70M"
+				   frequency = "PT24H">
+	</ExtendedScannerInfo>
+	<ExtendedScannerInfo scenarioname = "DockerVolumes"
+				   librarypath = "ContainerScanner-Inventory.dll"
+				   functionname = "getDockerVolumesInventory"
+				   firstRunDelay ="PT75M"
+				   frequency = "PT24H">
+	</ExtendedScannerInfo>
+</AsmExtendedScannerConfiguration>

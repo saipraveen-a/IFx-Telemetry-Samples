@@ -1,0 +1,14 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <RootNamespace>IFxTest_MA</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="GenevaMonitoringAgent" Version="42.7.10" />
+    <PackageReference Include="Microsoft.Cloud.InstrumentationFramework" Version="3.2.5.1" />
+  </ItemGroup>
+
+</Project>

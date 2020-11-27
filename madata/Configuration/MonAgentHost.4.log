@@ -1,0 +1,15 @@
+﻿Info  (2020-11-24T13:31:43Z): MonAgentHost.exe - Monitoring Agent Version 42.07.10 - Sep 23 2019 14:05:00 -  amd64 - OS 10.0.19042
+Info  (2020-11-24T13:31:43Z): MonAgentHost.exe - See http://aka.ms/GenevaAgentHelp for help interpreting and asking questions about logged messages.
+Info  (2020-11-24T13:31:43Z): MonAgentHost.exe - Successfully parsed command line arguments.
+Info  (2020-11-24T13:31:43Z): MonAgentHost.exe - Actual command is : -serviceShutdown MonAgentShutdownEvent.20000 -parent 20000 -deploymentdir "C:\Users\saianu\.nuget\packages\genevamonitoringagent\42.7.10\Monitoring\Agent" -LocalPath "D:\Samples\madata" -ConfigFile "D:\Samples\maconfig\basicconfig.xml"  
+Info  (2020-11-24T13:31:43Z): MonAgentHost.exe - Current agent working directory is 'C:\Users\saianu\.nuget\packages\genevamonitoringagent\42.7.10\Monitoring\Agent'
+Info  (2020-11-24T13:31:43Z): MonAgentHost.exe - Starting agent manager: 'C:\Users\saianu\.nuget\packages\genevamonitoringagent\42.7.10\Monitoring\Agent\MonAgentManager.exe -serviceShutdown MonAgentShutdownEvent.20000 -parent 20000 -deploymentdir "C:\Users\saianu\.nuget\packages\genevamonitoringagent\42.7.10\Monitoring\Agent" -LocalPath "D:\Samples\madata" -ConfigFile "D:\Samples\maconfig\basicconfig.xml" -LogPath "D:\Samples\madata\Configuration\MonAgentHost.4.log"'
+Info  (2020-11-24T13:31:43Z): MonAgentManager.exe - Monitoring Agent Version 42.07.10 - Sep 23 2019 14:07:43 -  amd64 - OS 10.0.19042
+Info  (2020-11-24T13:31:43Z): MonAgentManager.exe - See http://aka.ms/GenevaAgentHelp for help interpreting and asking questions about logged messages.
+Info  (2020-11-24T13:31:43Z): MonAgentManager.exe - Disk free space available for MA is 431561MB out of total partition size of 488255MB in D:\Samples\madata
+Info  (2020-11-24T13:31:43Z): MonAgentManager.exe - Table directory is 'D:\Samples\madata\Tables'
+Info  (2020-11-24T13:31:43Z): MonAgentManager.exe - Agent working directory is C:\Users\saianu\.nuget\packages\genevamonitoringagent\42.7.10\Monitoring\Agent; running from deployment directory
+Info  (2020-11-24T13:31:43Z): MonAgentManager.exe - Waiting for parent process 20000 of the manager to terminate.
+Info  (2020-11-24T13:31:43Z): MonAgentManager.exe - Successfully parsed command line arguments.
+Info  (2020-11-24T13:31:43Z): MonAgentManager.exe - Actual command is :   -deploymentdir "C:\Users\saianu\.nuget\packages\genevamonitoringagent\42.7.10\Monitoring\Agent" -LocalPath "D:\Samples\madata"   -managerver 1  -parent 24568 
+Info  (2020-11-24T13:31:43Z): MonAgentManager.exe - Starting agent: 'C:\Users\saianu\.nuget\packages\genevamonitoringagent\42.7.10\Monitoring\Agent\MonAgentCore.exe   -deploymentdir "C:\Users\saianu\.nuget\packages\genevamonitoringagent\42.7.10\Monitoring\Agent" -LocalPath "D:\Samples\madata"   -managerver 1  -parent 24568 -ConfigFile "D:\Samples\maconfig\basicconfig.xml" '

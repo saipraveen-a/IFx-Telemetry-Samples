@@ -1,0 +1,5 @@
+﻿Error (2020-11-24T13:30:12Z): MonAgentLauncher.exe - Could not to query JobObjectCpuRateControlInformation to get the parent job object CPU rate; gle=5
+Info  (2020-11-24T13:30:12Z): MonAgentLauncher.exe - Starting the host: 'C:\Users\saianu\.nuget\packages\genevamonitoringagent\42.7.10\Monitoring\Agent\MonAgentHost.exe  -LocalPath "D:\Samples\madata" -parent 20504 -ConfigFile "D:\Samples\maconfig\basicconfig.xml"'
+Info  (2020-11-24T13:30:12Z): MonAgentLauncher.exe - Started the host
+Info  (2020-11-24T13:30:24Z): MonAgentLauncher.exe - Exiting the monitoring launcher after handling control 0.
+Info  (2020-11-24T13:30:24Z): MonAgentLauncher.exe - Stopping the monitoring agent host 13748.

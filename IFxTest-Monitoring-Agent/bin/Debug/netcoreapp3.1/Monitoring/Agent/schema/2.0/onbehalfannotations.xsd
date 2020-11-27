@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+
+<!-- This holds the schema for the XML that defines onbehalf annotations -->
+
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+   <xs:element name="Config">
+      <xs:complexType>
+	      <xs:attribute name="onBehalfFields" type="xs:string" use="required" />
+	      <xs:attribute name="containerSuffix" type="xs:string" use="optional" />
+	      <xs:attribute name="primaryPartitionField" type="xs:string" use="optional" />
+	      <xs:attribute name="partitionFields" type="xs:string" use="optional" />
+	      <xs:attribute name="onBehalfReplaceFields" type="xs:string" use="optional" />
+	      <xs:attribute name="excludeFields" type="xs:string" use="optional" />
+	      <xs:attribute name="validJsonColumns" type="xs:string" use="optional" />
+	      <xs:attribute name="Prefix" type="xs:string" use="optional" />
+	      <xs:attribute name="timePeriods" type="xs:string" use="optional" default="PT1H" />
+	      <xs:attribute name="isPrefixMatch" type="xs:boolean" use="optional" default="true" />
+	</xs:complexType>
+  </xs:element>
+
+</xs:schema>
+

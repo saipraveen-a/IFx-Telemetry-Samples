@@ -1,0 +1,93 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<SecurityPolicy
+   xmlns="http://forefront.microsoft.com/FEP/2010/01/PolicyData"
+   Name="Anti-malware Config for Azure Infra Tenants for PaaS Phase 3 release"
+   Version="1"
+   Description="Anti-malware Config policy for Azure Infra Tenants applications for PaaS Phase 3 release. This policy is applicable to Windows Server 2008 R2, 2012, and 2012 R2"
+   IsBuiltIn="0"
+   CreatedBy="Microsoft"
+   LastModifiedBy="AzSecMon"
+   >
+  <PolicySection Name="MEP.InfraConfigPolicy">
+    <LocalGroupPolicySettings>
+      <!-- Set MSFTInternal telemetry key -->
+      <AddKey Name="SOFTWARE\Policies\Microsoft\SQMClient">
+        <AddValue Name="MSFTInternal" Type="REG_DWORD">1</AddValue>
+      </AddKey>
+      <AddKey Name="SOFTWARE\Policies\Microsoft\Microsoft Antimalware\MpEngine">
+        <AddValue Name="MpSevilleEnable" Type="REG_DWORD">1</AddValue>
+      </AddKey>
+      <!-- Set AM PartnerGUID key. 00 for Azure Infra tenants -->
+      <AddKey Name="SOFTWARE\Policies\Microsoft\Microsoft Antimalware" Disabled="false">
+        <AddValue Name="PartnerGUID" Type="REG_SZ" Disabled="false">5FE1BC3B-41BF-4197-8FFE-DA2311848F00</AddValue>
+        <!--Event IDs set for auto generate the .cab support log-->
+        <AddValue Name="SupportLogEventIds" Type="REG_SZ" Disabled="false">1117|1118|1119|1002|1003|1005|2012|3002|5001|5008|5010|5012</AddValue>
+      </AddKey>
+      <!-- Set Scan policy -->
+      <AddKey Name="SOFTWARE\Policies\Microsoft\Microsoft Antimalware\Scan" Disabled="false">
+        <!-- Disable daily/weekly scan  -->
+        <AddValue Name="ScheduleDay" Type="REG_DWORD" Disabled="false">8</AddValue>
+        <!-- Allow WMI to change ScheduleDay setting  -->
+        <AddValue Name="LocalSettingOverrideScheduleDay" Type="REG_DWORD" Disabled="false">1</AddValue>
+        <!-- Set weekly scan on Saturday  -->
+        <AddValue Name="ScheduleDay" Type="REG_DWORD" Disabled="false">7</AddValue>
+        <!-- Set scan time to 2AM  -->
+        <AddValue Name="ScheduleTime" Type="REG_DWORD" Disabled="false">120</AddValue>
+        <!-- Set AvgCPULoadFactor to 20%  -->
+        <AddValue Name="AvgCPULoadFactor" Type="REG_DWORD" Disabled="false">20</AddValue>
+        <!-- Allow WMI to change AvgCPULoadFactor setting -->
+        <AddValue Name="LocalSettingOverrideAvgCPULoadFactor" Type="REG_DWORD" Disabled="false">1</AddValue>
+        <!-- Note: The Default Scan type is QUICK, no need to set that explicitly -->
+      </AddKey>
+      <!-- Set Default Exclusions -->
+      <AddKey Name="SOFTWARE\Policies\Microsoft\Microsoft Antimalware\Exclusions\Paths" Disabled="false">
+        <AddValue Name="%SystemDrive%\inetpub\temp\IIS Temporary Compressed Files" Type="REG_DWORD" Disabled="false">0</AddValue>
+        <AddValue Name="%windir%\SoftwareDistribution\Datastore\Logs" Type="REG_DWORD" Disabled="false">0</AddValue>
+        <AddValue Name="%windir%\SoftwareDistribution\Datastore" Type="REG_DWORD" Disabled="false">0</AddValue>
+      </AddKey>
+      <!-- Set AM UILockdown policy key, Paas Public release is headless (no UI) -->
+      <AddKey Name="SOFTWARE\Policies\Microsoft\Microsoft Antimalware\UX Configuration" Disabled="false">
+        <AddValue Name="UILockdown" Type="REG_DWORD" Disabled="false">1</AddValue>
+      </AddKey>
+      <!-- Disable Action Center notifications -->
+      <AddKey Name="SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\Explorer" Disabled="false">
+        <AddValue Name="HideSCAHealth" Type="REG_DWORD" Disabled="false">1</AddValue>
+      </AddKey>
+      <!-- Signature Updates -->
+      <!-- MU Opt in is by default, when AM service is enabled VM will receive signatures 3 times a day-->
+      <AddKey Name="SOFTWARE\Policies\Microsoft\Microsoft Antimalware\Signature Updates" Disabled="false">
+        <!-- Disable daily/weekly signature update -->
+        <AddValue Name="ScheduleDay" Type="REG_DWORD" Disabled="false">8</AddValue>
+        <!-- Set signature update interval to every 8 hour/s -->
+        <AddValue Name="SignatureUpdateInterval" Type="REG_DWORD" Disabled="false">8</AddValue>
+      </AddKey>
+      <!-- Set AM SpyNet policy key -->
+      <AddKey Name="SOFTWARE\Policies\Microsoft\Microsoft Antimalware\SpyNet">
+        <!-- Don't allow UI to override the setting -->
+        <AddValue Name="LocalSettingOverrideSpyNetReporting" Type="REG_DWORD" Disabled="false">0</AddValue>
+        <!-- Opt-in for Advanced MAPS telemetry reporting -->
+        <!-- Configures the behavior of samples submission in UI process (not in the Service) when opt-in for Advanced MAPS telemetry is set (SpyNetReporting = 2) -->
+        <AddValue Name="SpyNetReporting" Type="REG_DWORD">2</AddValue>
+        <AddValue Name="LocalSettingOverrideSpyNetReporting" Type="REG_DWORD">0</AddValue>
+        <!-- Set AM SpyNet SubmitSamplesConsent key -->
+        <!-- 0 - not set, 1 - always submit samples without user consent (UI dialog), 2 - never submit samples -->
+        <AddValue Name="SubmitSamplesConsent" Type="REG_DWORD">1</AddValue>
+        <!-- Set to send heartbeat telemetry every day -->
+        <AddValue Name="HeartbeatDelayInDays" Type="REG_DWORD">1</AddValue>
+        <!-- Set heartbeat sampling rate to be 100% which correspond to 10000 -->
+        <AddValue Name="HeartbeatSamplingRate" Type="REG_DWORD">10000</AddValue>
+        <!--Internal backend Microsoft servers-->
+        <AddValue Name="BypassInternetCheck" Type="REG_DWORD">1</AddValue>
+        <!-- Machines without internet connectivity to work with telemetry -->
+        <AddValue Name="SSLOptions" Type="REG_DWORD">0</AddValue>
+      </AddKey>
+      <!--Action taken  when malware is detected -->
+      <AddKey Name="SOFTWARE\Policies\Microsoft\Microsoft Antimalware\Threats\ThreatSeverityDefaultAction">
+        <AddValue Name="1" Type="REG_DWORD">2</AddValue>
+        <AddValue Name="2" Type="REG_DWORD">2</AddValue>
+        <AddValue Name="4" Type="REG_DWORD">2</AddValue>
+        <AddValue Name="5" Type="REG_DWORD">2</AddValue>
+      </AddKey>
+    </LocalGroupPolicySettings>
+  </PolicySection>
+</SecurityPolicy>

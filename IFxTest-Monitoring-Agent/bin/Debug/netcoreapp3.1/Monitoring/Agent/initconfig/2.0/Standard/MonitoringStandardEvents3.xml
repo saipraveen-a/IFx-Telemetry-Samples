@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<MonitoringManagement version="1.0" namespace="Ma" timestamp="2011-08-23T20:08:38.0823856Z" >
+
+  <Imports>
+    <Import file="AgentStandardEvents.xml" />
+  </Imports>
+
+</MonitoringManagement>

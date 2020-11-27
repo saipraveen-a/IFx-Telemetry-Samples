@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<MonitoringManagement version="1.0" timestamp="2017-11-01T22:18:05.3320241Z">
+  <Imports>
+    <Import file="ReservedEventsTeam2Offline.xml" forceLocal="true" />
+  </Imports>
+  
+  <Events>
+	  <EventDeclarations storeType="CentralBond">
+			<Declaration eventName="AsmSec2Data" account="AzSecurityStore"/>
+			<Declaration eventName="AsmSec2Diag" account="AzSecurityStore"/>
+			<Declaration eventName="AsmSec2Alert" account="AzSecurityStore"/>
+			<Declaration eventName="AsmSec2Inv" account="AzSecurityStore"/>
+			<Declaration eventName="AsmSec2AdtInv" account="AuditStore"/>
+			<Declaration eventName="AsmSec2AdtData" account="AuditStore"/>
+	  </EventDeclarations>
+   
+    <FileMonitors>
+      <FileWatchItem eventName="AsmSec2FM" account="AzSecurityStore" storeType="CentralBond" container="azsecasmfmevent" />
+    </FileMonitors>
+
+  </Events>
+  <EventStreamingAnnotations>
+    <EventStreamingAnnotation name="^AsmSec2Data$">
+      <Cosmos>
+        <Content><![CDATA[<Config />]]></Content>
+      </Cosmos>
+    </EventStreamingAnnotation>
+    <EventStreamingAnnotation name="^AsmSec2Inv$">
+      <Cosmos>
+        <Content><![CDATA[<Config />]]></Content>
+      </Cosmos>
+    </EventStreamingAnnotation>
+  </EventStreamingAnnotations>
+</MonitoringManagement>

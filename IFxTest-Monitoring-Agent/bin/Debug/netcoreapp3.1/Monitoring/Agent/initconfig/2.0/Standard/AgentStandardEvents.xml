@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<MonitoringManagement version="1.0" namespace="Ma" timestamp="2013-06-02T00:00:00.000Z" >
+
+  <Events>
+
+    <HeartBeats>
+        <HeartBeat eventName="MaHeartBeats" storeType="CentralBond" sampleRateInSeconds="60" duration="PT5M" retentionInDays="29" retryTimeout="PT10M" diskQuotaInMB="32" />
+    </HeartBeats>
+
+    <DerivedEvents>
+
+      <DerivedEvent duration="PT24H"
+                    eventName="MaQosEvent"
+                    storeType="Local"
+                    retryTimeout="PT0M" >
+        <Query>
+          <![CDATA[let Level = 1 where Level == 0]]>
+        </Query>
+      </DerivedEvent>
+
+      <DerivedEvent duration="PT24H"
+                    eventName="MaCounterEvent"
+                    storeType="Local"
+                    retryTimeout="PT0M" >
+        <Query>
+          <![CDATA[let Level = 1 where Level == 0]]>
+        </Query>
+      </DerivedEvent>
+
+      <DerivedEvent duration="PT24H"
+                    eventName="MAEventTable"
+                    storeType="Local"
+                    retryTimeout="PT0M" >
+        <Query>
+          <![CDATA[let Level = 1 where Level == 0]]>
+        </Query>
+      </DerivedEvent>
+
+      <DerivedEvent duration="PT24H"
+                    eventName="MaMetricsExtensionEtw"
+                    storeType="Local"
+                    retryTimeout="PT0M" >
+        <Query>
+          <![CDATA[let Level = 1 where Level == 0]]>
+        </Query>
+      </DerivedEvent>
+
+     <DerivedEvent duration="PT24H"
+                    eventName="MaHealthExtensionEtw"
+                    storeType="Local"
+                    retryTimeout="PT0M" >
+        <Query>
+          <![CDATA[let Level = 1 where Level == 0]]>
+        </Query>
+      </DerivedEvent>
+
+      <!-- MD_E_STATUS == 0x00010034  -->
+      <!-- MD_E_WARNING_STATUS == -2147418048  -->
+      <!-- MD_E_BLOOMFILTERED_CUSTOMER == 65601  -->
+      <DerivedEvent source="MAEventTable"
+                    duration="PT15M"
+                    eventName="MaErrorsSummary"
+                    priority="Low"
+                    retentionInDays="29"
+                    storeType="CentralBond"
+                    whereToRun="Local" >
+        <Query>
+          <![CDATA[
+        where Level < 3 || MDRESULT == 0x00010034 || MDRESULT == -2147418048 || MDRESULT == 65601
+        let MessageCount=1
+        ]]>
+        </Query>
+      </DerivedEvent>
+
+      <DerivedEvent source="MaQosEvent"
+        duration="PT5M"
+        eventName="MaQosSummary"
+        priority="Low"
+        retentionInDays="29"
+        storeType="CentralBond"
+        whereToRun="Local">
+        <Query>
+          <![CDATA[
+                  groupby Identity(),Operation,Object
+                  let TotalCount = Count()
+                  let SuccessCount = Sum(Success ? 1 : 0)
+                  let Retries = Sum(Retries)
+                  let AverageDuration = Average(1.0 * DurationInMilliseconds)
+                  let AverageSize = Average(1.0 * DataSizeInBytes)
+                  let AverageDelay = Average(1.0 * DataDelayInMilliseconds)
+                  let TotalSize = Sum(DataSizeInBytes)
+                  let TotalRowsRead = Sum(DataItemReadCount)
+                  let TotalRowsSent = Sum(DataItemWriteCount)
+        ]]>
+        </Query>
+      </DerivedEvent>
+
+      <DerivedEvent source="MaCounterEvent"
+            duration="PT5M"
+            eventName="MaCounterSummary"
+            priority="Low"
+            retryTimeout="PT15M"
+            storeType="CentralBond"
+            retentionInDays="29"
+            whereToRun="Local">
+        <Query>
+          <![CDATA[
+          groupby Identity(),CounterName
+          let SampleCount = Count()
+          let CounterValue = (CounterName.Contains("%") ? Average(Sample) : Max(Sample))
+        ]]>
+        </Query>
+      </DerivedEvent>
+
+    </DerivedEvents>
+
+  </Events>
+
+</MonitoringManagement>

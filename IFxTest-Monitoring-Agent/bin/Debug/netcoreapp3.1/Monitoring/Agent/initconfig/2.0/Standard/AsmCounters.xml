@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<MonitoringManagement version="1.0" timestamp="2017-12-14T01:43:00.0404093Z">
+  <Imports>
+    <Import file="AsmCountersOffline.xml" forceLocal="true" />
+  </Imports>
+  <Events>
+    <EventDeclarations storeType="CentralBond">
+      <!-- known -->
+      <Declaration eventName="AsmSecPackCntr" account="AzSecurityStore" />
+    </EventDeclarations>
+  </Events>
+</MonitoringManagement>

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<MonitoringManagement version="1.0" timestamp="2011-05-12T20:08:38.0823856Z" >
+
+    <Imports>
+        <!-- Azure Security Monitoring Core Events !-->
+        <Import file="MonitoringEwsEventsCore.xml" />
+    </Imports>
+
+</MonitoringManagement>
+

@@ -1,0 +1,10 @@
+<MonitoringManagement version="1.0" timestamp="2016-03-19T00:00:00.0000000Z">
+  <Events>
+    <Extensions>  
+      <Extension extensionName="AzurePerfCollectorExtension">
+        <CommandLine><![CDATA[AzurePerfCollectorExtension.exe]]></CommandLine>
+        <ResourceUsage cpuPercentUsage="1" cpuThrottling="true" memoryLimitInMB="24" memoryThrottling="true" />
+      </Extension>
+    </Extensions>
+  </Events>
+</MonitoringManagement>

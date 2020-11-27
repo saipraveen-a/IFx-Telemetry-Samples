@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<MonitoringManagement version="1.0"  timestamp="2014-12-05T00:00:00.0000000Z" >
+
+  <Imports>
+    <Import file="AzSecMdsWDATPOffline.xml" forceLocal="true" />
+  </Imports>
+  
+  <Events>
+	  <EventDeclarations storeType="CentralBond">
+			<!-- Events that are already known to the team --> 
+			<Declaration eventName="AsmMsSense" account="AzSecurityStore"/>
+			<Declaration eventName="AsmMsSDiag" account="AzSecurityStore"/>
+			
+			<!-- Create a few more entries for reserved columns--> 
+			<Declaration eventName="AsmMsSInv" account="AzSecurityStore"/>
+			<Declaration eventName="AsmMsSAL" account="AzSecurityStore"/>
+	  </EventDeclarations>
+  </Events>
+</MonitoringManagement>
+

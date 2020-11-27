@@ -1,0 +1,75 @@
+<!--
+The ClientAggregatedMetrics.man event manifest is for reference only and is not part of the build.
+
+The implicit layout of the  event payload of the metrics data aggregated across one collection interval on the client.
+
+  String:   Metric monitoring account name
+  String:   Metric namespace
+  String:   Metric name
+  Int64:    Time bucket to which raw samples of this metric were aggregated as a file time UTC
+  String:   Flattened metric dimension list.  The dimensions will be alphabetically sorted and separated with '^'.  If the dimension name contains the separator character it will be replaced with '_'.
+            i.e. Dim1^Dim2^Dim3
+  String:   Flattened metric dimension value list.  The values will be ordered to pair with the corresponding index in the list above and separated with '^'.  If the dimension value contains the separator character it will be replaced with '_'.
+            i.e. Dim1Value^Dim2Value^Dim3Value
+  Int32:    Metric sampling types passed as flags:
+            None = 0x0
+            Min = 0x1
+            Max = 0x2
+            Sum = 0x4
+            SumOfSquares = 0x8
+            Count = 0x10
+      
+   UInt64:  Min sample value (if specified in sampling types)
+   UInt64:  Max sample value (if specified in sampling types)
+   UInt64:  Sum of samples (if specified in sampling types)
+   Float:   Sum of sample squares (if specified in sampling types)
+   UInt32:  Samples count (if specified in sampling types)
+  -->
+
+  <instrumentationManifest 
+    xmlns="http://schemas.microsoft.com/win/2004/08/events" 
+    xmlns:win="http://manifests.microsoft.com/win/2004/08/windows/events" 
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+    xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+    xmlns:trace="http://schemas.microsoft.com/win/2004/08/events/trace">
+    <instrumentation>
+      <events>
+        <provider 
+          name="Microsoft-Online-Metrics-MetricsExtension" 
+          guid="{2F23A2A9-0DE7-4CB4-A778-FBDF5C1E7372}" 
+          symbol="AggregatedMetricsEvent" 
+          resourceFileName="UnregisteredManifest.exe" 
+          messageFileName="UnregisteredManifest.exe">
+          <events>
+            <event symbol="MetricAggregate" value="1" version="1" channel="Microsoft-Online-Metrics-MetricsExtension/MetricAggregates" template="MetricAggregateTemplate"/>
+          </events>
+          <channels>
+            <channel name="Microsoft-Online-Metrics-MetricsExtension/MetricAggregate" chid="Microsoft-Online-Metrics-MetricsExtension/MetricAggregates" symbol="Microsoft_Online_Metrics_MetricsExtension_MetricAggregates" type="Analytic" enabled="true">
+            </channel>
+          </channels>
+          <templates>
+            <template tid="MetricAggregateTemplate">
+              <data name="sizeMonitoringAccount" inType="win:UInt16"/>
+              <data name="monitoringAccount" inType="win:AnsiString" length="sizeMonitoringAccount"/>
+              <data name="sizeMetricNamespace" inType="win:UInt16"/>
+              <data name="metricNamespace" inType="win:AnsiString" length="sizeMetricNamespace"/>
+              <data name="sizeMetricName" inType="win:UInt16"/>
+              <data name="metricName" inType="win:AnsiString" length="sizeMetricName"/>
+              <data name="timeBucketUtc" inType="win:Int64"/>
+              <data name="sizeDimensionNameList" inType="win:UInt16"/>
+              <data name="dimensionNameList"  inType="win:AnsiString" length="sizeDimensionNameList"/>
+              <data name="sizeDimensionValueList" inType="win:UInt16"/>
+              <data name="dimensionValueList"  inType="win:AnsiString" length="sizeDimensionValueList"/>
+              <data name="scalingFactor" inType="win:Float"/>
+              <data name="samplingTypeFlags" inType="win:UInt32"/>
+              <data name="minValue" inType="win:UInt64"/>
+              <data name="maxValue" inType="win:UInt64"/>
+              <data name="sumValue" inType="win:UInt64"/>
+              <data name="sumOfSquaresValue" inType="win:Float"/>
+              <data name="countValue" inType="win:UInt32"/>
+            </template>
+          </templates>
+        </provider>
+      </events>
+    </instrumentation>
+  </instrumentationManifest>

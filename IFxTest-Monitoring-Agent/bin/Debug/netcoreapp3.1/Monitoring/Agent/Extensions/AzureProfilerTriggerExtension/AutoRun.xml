@@ -1,0 +1,9 @@
+<MonitoringManagement version="1.0" timestamp="2016-03-19T00:00:00.0000000Z">
+  <Events>
+    <Extensions> 
+      <Extension extensionName="AzureProfilerTriggerExtension" startup="OnExtensionCommand">
+        <CommandLine><![CDATA[AzureProfilerTriggerExtension.exe]]></CommandLine>
+      </Extension>
+    </Extensions>
+  </Events>
+</MonitoringManagement>

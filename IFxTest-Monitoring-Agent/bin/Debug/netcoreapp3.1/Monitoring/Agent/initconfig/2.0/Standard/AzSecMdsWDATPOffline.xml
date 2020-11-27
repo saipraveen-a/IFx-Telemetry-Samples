@@ -1,0 +1,40 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<MonitoringManagement version="1.0"  timestamp="2014-12-05T00:00:00.0000000Z" >
+    <Events>
+        <EtwProviders>
+            <!-- MsSense scanner provider -->
+            <EtwProvider guid="cb2ff72d-d4e4-585d-33f9-f3a395c40be7"
+                         format="EventSource"
+                         storeType="CentralBond"
+                         duration="PT1M">
+                <DefaultEvent eventName="AsmMsSense" account="AzSecurityStore" />
+            </EtwProvider>
+			
+			<!-- MsSense Diagnostics Provider -->
+            <EtwProvider guid="65a1b6fc-4c24-59c9-e3f3-ad11ac510b41"
+                         format="EventSource"
+                         storeType="Local">
+                <DefaultEvent eventName="AsmMsSDiagLocal" />
+            </EtwProvider>
+			
+        </EtwProviders>
+		
+		<DerivedEvents>
+			<DerivedEvent source="AsmMsSDiagLocal" eventName="AsmMsSDiag" storeType="CentralBond" priority="Low"
+						duration="PT5M" retryTimeout="PT10080M" account="AzSecurityStore" retentionInDays="30">
+			<Query>
+			<![CDATA[
+				where (TaskName="LruCacheCounter" || TaskName="EventTracker" || TaskName="BackgroundActionStats" || TaskName="FirstSeenModuleLoadCount" || TaskName="BucketCappingFilterCounter" || TaskName="reportCounter" || TaskName="EtwSessionCounter" || TaskName="LogServiceStartedEvent" || TaskName="LogServiceFailedToStartEvent" || TaskName="InitializeComponentsActivity" || TaskName="StartComponentsActivity")
+				let ReportingIdentity=GetStaticEnvironmentVariable("MA_HEARTBEAT_IDENTITY")		  
+				let AssetIdentity=GetStaticEnvironmentVariable("MA_AZURE_IDENTITY")
+				let NodeIdentity=""
+				let NodeType=""			
+				select
+					ReportingIdentity, AssetIdentity, NodeIdentity, NodeType,
+					ProviderName, ProviderGuid, EventId, TaskName, Message, EventMessage, Level
+				]]>
+			</Query>
+		</DerivedEvent>
+	  </DerivedEvents>
+    </Events>
+</MonitoringManagement>

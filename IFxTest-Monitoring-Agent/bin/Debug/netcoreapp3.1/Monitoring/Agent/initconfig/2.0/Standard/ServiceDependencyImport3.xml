@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<MonitoringManagement version="1.0" namespace="GenevaMdm" timestamp="2019-07-02T02:25:38.0823856Z" eventVersion="3">
+  <Imports>
+    <Import file="ServiceDependencyImportOffline3.xml" forceLocal="true" />
+  </Imports>
+  <Events>
+    <EventDeclarations storeType="CentralBond">
+      <!-- Events that are already known to the team -->
+      <Declaration eventName="MdaSvcDepIdentity" />
+      <Declaration eventName="MdaSvcDepAgentHeartbeat" />
+      <Declaration eventName="MdaSvcDepHttp" />
+      <Declaration eventName="MdaSvcDepDns" />
+      <Declaration eventName="MdaSvcDepDnsPerformance" />
+      <Declaration eventName="MdaSvcDepDnsErrors" />
+      <Declaration eventName="MdaSvcDepNet" />
+      <Declaration eventName="MdaSvcDepBoundPort" />
+    </EventDeclarations>
+  </Events>
+</MonitoringManagement>
+
